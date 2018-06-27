@@ -1,0 +1,71 @@
+---
+title: "List of traits and disease GWASes used in this study"
+---
+<hr>
+
+*Yan Holtz, Zhihong Zhu, Julanne Frater, Perry Bartlett, Jian Yang, John McGrath*
+
+<hr>
+
+<br><br>
+```{r echo=FALSE, warning=FALSE, message=FALSE}
+# A few library
+library(tidyverse)
+library(DT)
+library(gdata)
+
+
+# Load the file
+meaning <- read.xls("0_DATA/list_of_traits_GSMR.xlsx", header=T)
+```
+
+This study check the putative causal effect of vitamin D on ``r nrow(meaning)` traits and diseases`. These phenotypes are grouped in primary traits, secondary traits and risk factors as listed below:
+
+
+
+
+#Primary traits
+***
+```{r, fig.width=10, warning=FALSE, message=FALSE}
+tmp <- meaning %>% 
+  filter(Group=="Primary") %>%
+  select(Trait, N, Publication)
+
+datatable(tmp, rownames = FALSE, options = list(pageLength = 10, scrollX=T, dom = 'tip') )
+
+```
+
+
+
+#Secondary traits
+***
+
+```{r, fig.width=10, warning=FALSE, message=FALSE}
+tmp <- meaning %>% 
+  filter(Group=="Secondary") %>%
+  select(Trait, N, Publication)
+
+datatable(tmp, rownames = FALSE, options = list(pageLength = 10, scrollX=T, dom = 'tip') )
+
+```
+
+
+
+
+
+
+
+#Risk factors
+***
+
+```{r, fig.width=10, warning=FALSE, message=FALSE}
+tmp <- meaning %>% 
+  filter(Group=="Risk") %>%
+  select(Trait, N, Publication)
+
+datatable(tmp, rownames = FALSE, options = list(pageLength = 10, scrollX=T, dom = 'tip') )
+
+```
+
+
+

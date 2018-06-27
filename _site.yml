@@ -13,6 +13,8 @@ navbar:
       href: 3_LDSC.html
     - text: "mtCOJO"
       href: 4_mtCOJO.html
+    - text: "Traits"
+      href: 5_list.html
 
       
       

@@ -39,4 +39,4 @@ ssh uqyholtz@inode.qbi.uq.edu.au
 /ibscratch/wrayvisscher/Yan_Holtz/
 ```
 
-<u>Note</u>: This document is hosted in this [github repository]()
+<u>Note</u>: This document is hosted in this [github repository](https://github.com/holtzy/VitaminD-Causality)

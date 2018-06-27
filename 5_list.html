@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+
+<meta charset="utf-8" />
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="pandoc" />
+
+
+
+
+<title>List of traits and disease GWASes used in this study</title>
+
+<script src="site_libs/jquery-1.12.4/jquery.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/lumen.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<script src="site_libs/navigation-1.1/codefolding.js"></script>
+<link href="site_libs/highlightjs-9.12.0/default.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+<link href="site_libs/pagedtable-1.1/css/pagedtable.css" rel="stylesheet" />
+<script src="site_libs/pagedtable-1.1/js/pagedtable.js"></script>
+<script src="site_libs/htmlwidgets-1.2/htmlwidgets.js"></script>
+<link href="site_libs/datatables-css-0.0.0/datatables-crosstalk.css" rel="stylesheet" />
+<script src="site_libs/datatables-binding-0.4/datatables.js"></script>
+<link href="site_libs/dt-core-1.10.16/css/jquery.dataTables.min.css" rel="stylesheet" />
+<link href="site_libs/dt-core-1.10.16/css/jquery.dataTables.extra.css" rel="stylesheet" />
+<script src="site_libs/dt-core-1.10.16/js/jquery.dataTables.min.js"></script>
+<link href="site_libs/crosstalk-1.0.0/css/crosstalk.css" rel="stylesheet" />
+<script src="site_libs/crosstalk-1.0.0/js/crosstalk.min.js"></script>
+
+<style type="text/css">code{white-space: pre;}</style>
+<style type="text/css">
+  pre:not([class]) {
+    background-color: white;
+  }
+</style>
+<script type="text/javascript">
+if (window.hljs) {
+  hljs.configure({languages: []});
+  hljs.initHighlightingOnLoad();
+  if (document.readyState && document.readyState === "complete") {
+    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
+  }
+}
+</script>
+
+
+
+<style type="text/css">
+h1 {
+  font-size: 34px;
+}
+h1.title {
+  font-size: 38px;
+}
+h2 {
+  font-size: 30px;
+}
+h3 {
+  font-size: 24px;
+}
+h4 {
+  font-size: 18px;
+}
+h5 {
+  font-size: 16px;
+}
+h6 {
+  font-size: 12px;
+}
+.table th:not([align]) {
+  text-align: left;
+}
+</style>
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+
+</head>
+
+<body>
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+code {
+  color: inherit;
+  background-color: rgba(0, 0, 0, 0.04);
+}
+img {
+  max-width:100%;
+  height: auto;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+</style>
+
+
+<style type="text/css">
+/* padding for bootstrap navbar */
+body {
+  padding-top: 54px;
+  padding-bottom: 40px;
+}
+/* offset scroll position for anchor links (for fixed navbar)  */
+.section h1 {
+  padding-top: 59px;
+  margin-top: -59px;
+}
+
+.section h2 {
+  padding-top: 59px;
+  margin-top: -59px;
+}
+.section h3 {
+  padding-top: 59px;
+  margin-top: -59px;
+}
+.section h4 {
+  padding-top: 59px;
+  margin-top: -59px;
+}
+.section h5 {
+  padding-top: 59px;
+  margin-top: -59px;
+}
+.section h6 {
+  padding-top: 59px;
+  margin-top: -59px;
+}
+</style>
+
+<script>
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark it active
+  menuAnchor.parent().addClass('active');
+
+  // if it's got a parent navbar menu mark it active as well
+  menuAnchor.closest('li.dropdown').addClass('active');
+});
+</script>
+
+
+<div class="container-fluid main-container">
+
+<!-- tabsets -->
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+</script>
+
+<!-- code folding -->
+<style type="text/css">
+.code-folding-btn { margin-bottom: 4px; }
+</style>
+<script>
+$(document).ready(function () {
+  window.initializeCodeFolding("hide" === "show");
+});
+</script>
+
+
+
+
+
+
+<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html">Vitamin-D | Causality</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        <li>
+  <a href="index.html">Intro</a>
+</li>
+<li>
+  <a href="1_GWAS.html">GWAS</a>
+</li>
+<li>
+  <a href="2_GSMR.html">GSMR</a>
+</li>
+<li>
+  <a href="3_LDSC.html">LDSC</a>
+</li>
+<li>
+  <a href="4_mtCOJO.html">mtCOJO</a>
+</li>
+<li>
+  <a href="5_list.html">Traits</a>
+</li>
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div class="fluid-row" id="header">
+
+<div class="btn-group pull-right">
+<button type="button" class="btn btn-default btn-xs dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span>Code</span> <span class="caret"></span></button>
+<ul class="dropdown-menu" style="min-width: 50px;">
+<li><a id="rmd-show-all-code" href="#">Show All Code</a></li>
+<li><a id="rmd-hide-all-code" href="#">Hide All Code</a></li>
+</ul>
+</div>
+
+
+
+<h1 class="title toc-ignore">List of traits and disease GWASes used in this study</h1>
+
+</div>
+
+
+<hr>
+<p><em>Yan Holtz, Zhihong Zhu, Julanne Frater, Perry Bartlett, Jian Yang, John McGrath</em></p>
+<hr>
+<p><br><br></p>
+<p>This study check the putative causal effect of vitamin D on <code>75 traits and diseases</code>. These phenotypes are grouped in primary traits, secondary traits and risk factors as listed below:</p>
+<div id="primary-traits" class="section level1">
+<h1>Primary traits</h1>
+<hr />
+<pre class="r"><code>tmp &lt;- meaning %&gt;% 
+  filter(Group==&quot;Primary&quot;) %&gt;%
+  select(Trait, N, Publication)
+
+datatable(tmp, rownames = FALSE, options = list(pageLength = 10, scrollX=T, dom = &#39;tip&#39;) )</code></pre>
+<div id="htmlwidget-57cddff05220ec190a31" style="width:100%;height:auto;" class="datatables html-widget"></div>
+<script type="application/json" data-for="htmlwidget-57cddff05220ec190a31">{"x":{"filter":"none","data":[["Alzheimer's Disease","Asthma","Autism Spectrum Disorder","Bipolar Disorder","Cancer","Coronary Artery Disease","Dementia - Alzheimer","Depressive Symptoms","Disease count","Dyslipidemia","Hematocrit","Major depressive disorder","Major Depressive Disorder","Mean Corpuscular Hemoglobin","Mean corpuscular volume","Mean platelet volume ","Multiple Sclerosis","Neuroticism","Neutrophil","osteoporosis","Parkinson's Disease","Platelet ditribution width","psychiatric disorder","Red blood cell count","Rheumatoid Arthritis","Schizophrenia","Stroke","Type II diabetes"],["17008 - 37154 ","108039","13088 - 16664 ","10410 - 10700 ","108039","60801 - 123504 ","300000 +","","108039","108039","","108039","9240 - 9519 ","","","","14,498 - 24,091","","","108039","13708 - 95282","","108039","","14361 - 43923 ","36989 - 113075 ","67162 - 454450<a0>","108039"],["Lambert et al. 2013 Nature Genetics ","Zhu et al.<a0>2018 Nat. Commun.","Robinson et al. 2016 Nature Genetics ","Ruderfer et al. 2014 Molecular Psychiatry ","Zhu et al.<a0>2018 Nat. Commun.","Nikpey et al. 2015 Nature Genetics ","Marioni et al. 2018 BioRXIV","Okbay et al. 2016 Nature Genetics","Zhu et al.<a0>2018 Nat. Commun.","Zhu et al.<a0>2018 Nat. Commun.","Astle et al. 2016 Cell","Zhu et al.<a0>2018 Nat. Commun.","PGC 2013 Molecular Psychiatry ","Astle et al. 2016 Cell","Astle et al. 2016 Cell","Astle et al. 2016 Cell","Beecham et al. 2013, Nature Genetics","Okbay et al. 2016 Nature Genetics","Astle et al. 2016 Cell","Zhu et al.<a0>2018 Nat. Commun.","Nalls et al. 2015 Nature Genetics","Astle et al. 2016 Cell","Zhu et al.<a0>2018 Nat. Commun.","Astle et al. 2016 Cell","Okada et al. 2014 Nature ","PGC 2014 Nature ","Malik et al. 2018 Nature Genetics","Zhu et al.<a0>2018 Nat. Commun."]],"container":"<table class=\"display\">\n  <thead>\n    <tr>\n      <th>Trait<\/th>\n      <th>N<\/th>\n      <th>Publication<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"pageLength":10,"scrollX":true,"dom":"tip","order":[],"autoWidth":false,"orderClasses":false}},"evals":[],"jsHooks":[]}</script>
+</div>
+<div id="secondary-traits" class="section level1">
+<h1>Secondary traits</h1>
+<hr />
+<pre class="r"><code>tmp &lt;- meaning %&gt;% 
+  filter(Group==&quot;Secondary&quot;) %&gt;%
+  select(Trait, N, Publication)
+
+datatable(tmp, rownames = FALSE, options = list(pageLength = 10, scrollX=T, dom = &#39;tip&#39;) )</code></pre>
+<div id="htmlwidget-ce5ac9992504ea43950c" style="width:100%;height:auto;" class="datatables html-widget"></div>
+<script type="application/json" data-for="htmlwidget-ce5ac9992504ea43950c">{"x":{"filter":"none","data":[["acute reaction to stress","Aged Macular Degeneration","allergic rhinitis","Basophil count","cardiovascular disease","Crohn's Disease","dermatophytosis","Eosinophilic esophagitis","Granulocyte count","Hemoglobin","hemorrhoids","hernia abdominopelvic cavity","hypertensive disease","Hippocampal volume","Immature Fraction of Reticulocytes","insomnia","IQ","IQ (UKB)","Iron deficiency anemias","Irritable bowel syndrome","Lymphocyte count","Macular degeneration","Monocyte count","Myeloid","Osteoarthritis","Peptic ulcers","Peripheral vascular disease","Platelet Count","Plateletcrit","Red cell distribution width","Reticulocyte count","Ulcerative Colitis","Varicose veins of lower extremities","Well being","White blood cell count"],["108039","16144 - 17832 ","108039","","108039","5956 - 21770","108039","","","","108039","108039","108039","","","108039","","","108039","108039","","108039","","","108039","108039","108039","","","","","6968 - 21770 ","108039","",""],["Zhu et al.<a0>2018 Nat. Commun.","Fritsche et al. 2016 Nature Genetics ","Zhu et al.<a0>2018 Nat. Commun.","Astle et al. 2016 Cell","Zhu et al.<a0>2018 Nat. Commun.","Liu et al. 2015 Nature Genetics ","Zhu et al.<a0>2018 Nat. Commun.","Astle et al. 2016 Cell","Astle et al. 2016 Cell","Astle et al. 2016 Cell","Zhu et al.<a0>2018 Nat. Commun.","Zhu et al.<a0>2018 Nat. Commun.","Zhu et al.<a0>2018 Nat. Commun.","H Adams et al. 2016 Nature Neuroscience","Astle et al. 2016 Cell","Zhu et al.<a0>2018 Nat. Commun.","Sniekers et al. 2017 Nature Genetics","Unpublished realised by Angli","Zhu et al.<a0>2018 Nat. Commun.","Zhu et al.<a0>2018 Nat. Commun.","Astle et al. 2016 Cell","Zhu et al.<a0>2018 Nat. Commun.","Astle et al. 2016 Cell","Astle et al. 2016 Cell","Zhu et al.<a0>2018 Nat. Commun.","Zhu et al.<a0>2018 Nat. Commun.","Zhu et al.<a0>2018 Nat. Commun.","Astle et al. 2016 Cell","Astle et al. 2016 Cell","Astle et al. 2016 Cell","Astle et al. 2016 Cell","Liu et al. 2015 Nature Genetics ","Zhu et al.<a0>2018 Nat. Commun.","Okbay et al. 2016 Nature Genetics","Astle et al. 2016 Cell"]],"container":"<table class=\"display\">\n  <thead>\n    <tr>\n      <th>Trait<\/th>\n      <th>N<\/th>\n      <th>Publication<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"pageLength":10,"scrollX":true,"dom":"tip","order":[],"autoWidth":false,"orderClasses":false}},"evals":[],"jsHooks":[]}</script>
+</div>
+<div id="risk-factors" class="section level1">
+<h1>Risk factors</h1>
+<hr />
+<pre class="r"><code>tmp &lt;- meaning %&gt;% 
+  filter(Group==&quot;Risk&quot;) %&gt;%
+  select(Trait, N, Publication)
+
+datatable(tmp, rownames = FALSE, options = list(pageLength = 10, scrollX=T, dom = &#39;tip&#39;) )</code></pre>
+<div id="htmlwidget-7d1ce79c9963204264aa" style="width:100%;height:auto;" class="datatables html-widget"></div>
+<script type="application/json" data-for="htmlwidget-7d1ce79c9963204264aa">{"x":{"filter":"none","data":[["BMI","Diastolic blood pressure","Edu Year","HDL cholesterol","Height","LDL cholesterol","LDL cholesterol","Outdoor activity (IPAQ)","Smoking","Systolic blood pressure","Tanning response to sun exposure","Waist-to-hip ratio adjusted for BMI"],["322154","108039","405072","188577","253288","188577","188577","456,426","456,426","108039","176,678","210088"],["Locke et al. 2015 Nature ","Sudlow C. et al. 2015 PLOS Medicine ","Okbay et al. 2016 Nature ","GLGC 2013 Nature Genetics ","Wood et al. 2014 Naure Genetics ","GLGC 2013 Nature Genetics ","GLGC 2013 Nature Genetics ","Angli in press","Angli in press","Sudlow C. et al. 2015 PLOS Medicine ","Visconti et al. 2018","Shungin et al. 2015 Nature "]],"container":"<table class=\"display\">\n  <thead>\n    <tr>\n      <th>Trait<\/th>\n      <th>N<\/th>\n      <th>Publication<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"pageLength":10,"scrollX":true,"dom":"tip","order":[],"autoWidth":false,"orderClasses":false}},"evals":[],"jsHooks":[]}</script>
+</div>
+
+<br><br>
+<hr />
+<p style="text-align: center; font-size: 80%">A work by <a href="https://github.com/holtzy/">Yan Holtz</a></p>
+<p style="text-align: center; font-size: 80%"><span style="color: #808080;"><em>Yan.holtz.data@gmail.com</em></span></p>
+
+<!-- Add icon library -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+<!-- Add font awesome icons -->
+<p style="text-align: center;">
+	<a href="https://twitter.com/r_graph_gallery?lang=en" class="fa fa-twitter"></a>
+	<a href="https://www.linkedin.com/in/yan-holtz-2477534a/" class="fa fa-linkedin"></a>
+	<a href="https://github.com/holtzy/" class="fa fa-github"></a>
+</p>
+
+
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>
