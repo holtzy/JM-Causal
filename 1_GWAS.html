@@ -1,0 +1,377 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+
+<meta charset="utf-8" />
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="pandoc" />
+
+
+
+
+<title>25 hydroxyvitamin D GWAS description</title>
+
+<script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/lumen.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<script src="site_libs/navigation-1.1/codefolding.js"></script>
+<link href="site_libs/highlightjs-9.12.0/default.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+<link href="site_libs/pagedtable-1.1/css/pagedtable.css" rel="stylesheet" />
+<script src="site_libs/pagedtable-1.1/js/pagedtable.js"></script>
+
+<style type="text/css">code{white-space: pre;}</style>
+<style type="text/css">
+  pre:not([class]) {
+    background-color: white;
+  }
+</style>
+<script type="text/javascript">
+if (window.hljs) {
+  hljs.configure({languages: []});
+  hljs.initHighlightingOnLoad();
+  if (document.readyState && document.readyState === "complete") {
+    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
+  }
+}
+</script>
+
+
+
+<style type="text/css">
+h1 {
+  font-size: 34px;
+}
+h1.title {
+  font-size: 38px;
+}
+h2 {
+  font-size: 30px;
+}
+h3 {
+  font-size: 24px;
+}
+h4 {
+  font-size: 18px;
+}
+h5 {
+  font-size: 16px;
+}
+h6 {
+  font-size: 12px;
+}
+.table th:not([align]) {
+  text-align: left;
+}
+</style>
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+
+</head>
+
+<body>
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+code {
+  color: inherit;
+  background-color: rgba(0, 0, 0, 0.04);
+}
+img {
+  max-width:100%;
+  height: auto;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+</style>
+
+
+<style type="text/css">
+/* padding for bootstrap navbar */
+body {
+  padding-top: 54px;
+  padding-bottom: 40px;
+}
+/* offset scroll position for anchor links (for fixed navbar)  */
+.section h1 {
+  padding-top: 59px;
+  margin-top: -59px;
+}
+
+.section h2 {
+  padding-top: 59px;
+  margin-top: -59px;
+}
+.section h3 {
+  padding-top: 59px;
+  margin-top: -59px;
+}
+.section h4 {
+  padding-top: 59px;
+  margin-top: -59px;
+}
+.section h5 {
+  padding-top: 59px;
+  margin-top: -59px;
+}
+.section h6 {
+  padding-top: 59px;
+  margin-top: -59px;
+}
+</style>
+
+<script>
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark it active
+  menuAnchor.parent().addClass('active');
+
+  // if it's got a parent navbar menu mark it active as well
+  menuAnchor.closest('li.dropdown').addClass('active');
+});
+</script>
+
+
+<div class="container-fluid main-container">
+
+<!-- tabsets -->
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+</script>
+
+<!-- code folding -->
+<style type="text/css">
+.code-folding-btn { margin-bottom: 4px; }
+</style>
+<script>
+$(document).ready(function () {
+  window.initializeCodeFolding("hide" === "show");
+});
+</script>
+
+
+
+
+
+
+<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html">Vitamin-D | Causality</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        <li>
+  <a href="index.html">Intro</a>
+</li>
+<li>
+  <a href="1_GWAS.html">GWAS</a>
+</li>
+<li>
+  <a href="2_GSMR.html">GSMR</a>
+</li>
+<li>
+  <a href="3_LDSC.html">LDSC</a>
+</li>
+<li>
+  <a href="4_mtCOJO.html">mtCOJO</a>
+</li>
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div class="fluid-row" id="header">
+
+<div class="btn-group pull-right">
+<button type="button" class="btn btn-default btn-xs dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span>Code</span> <span class="caret"></span></button>
+<ul class="dropdown-menu" style="min-width: 50px;">
+<li><a id="rmd-show-all-code" href="#">Show All Code</a></li>
+<li><a id="rmd-hide-all-code" href="#">Hide All Code</a></li>
+</ul>
+</div>
+
+
+
+<h1 class="title toc-ignore">25 hydroxyvitamin D GWAS description</h1>
+
+</div>
+
+
+<hr>
+<p><em>Yan Holtz, Zhihong Zhu, Julanne Frater, Perry Bartlett, Jian Yang, John McGrath</em></p>
+<hr>
+<div id="introduction" class="section level1">
+<h1>Introduction</h1>
+<hr />
+<p>A GWAS of 25 hydroxyvitamin D GWAS blood concentration has been realized and extensively described in <a href="">this study</a>. To put it in a nutshell, Vitamin-D concentration was available for a sample of about 426,000 european in the UK Biobank dataset. GWAS was run using a mixed linear model implemented in bolt, taking into account the relativeness between individuals. An extensive description of the results can be found here. This GWAS is the basis of all the following mendelian randomization results.</p>
+</div>
+<div id="manhattan-plot" class="section level1">
+<h1>Manhattan plot</h1>
+<hr />
+<p>The manhattan plot below gives a glimpse of the vitamin D GWAS result. Basically, 6 main loci were significantly associated with vitamin-D concentration in blood.</p>
+<pre class="r"><code># Load useful libraries
+library(tidyverse)
+library(qqman)
+library(readr)
+library(DT)
+library(RColorBrewer)
+library(ggrepel)
+
+# -------- Read result
+data=read_delim(&quot;0_DATA/GWAS_vitaminD_XiaEtAL.linear.gz&quot;, col_names=T, delim=&quot; &quot;)
+data$CHR=as.factor(data$CHR)
+
+
+
+# -------- Read after clumping data
+clump=read.table(&quot;0_DATA/result_GWAS_VitaminD_XiaEtAl_clumped&quot;, header=T)
+
+# A list of all SNPs implicated in an association? 
+Hit_SNP &lt;- c( 
+  as.character(clump$SNP), 
+  strsplit(as.character(clump$SP2), &#39;,&#39;, fixed=TRUE) %&gt;% unlist() %&gt;% gsub(&quot;\\(.\\)&quot;, &quot;&quot;, .) 
+)
+Hit_SNP &lt;- Hit_SNP[Hit_SNP != &quot;NONE&quot;]
+
+
+# -------- Add cumulative position + clumping information to data
+don &lt;- data %&gt;% 
+  
+  # Compute chromosome size and merge this info to the GWAS result
+  group_by(CHR) %&gt;% 
+  summarise(chr_len=max(BP)) %&gt;% 
+  mutate(tot=cumsum(chr_len)-chr_len) %&gt;%
+  dplyr::select(-chr_len) %&gt;%
+  left_join(data, ., by=c(&quot;CHR&quot;=&quot;CHR&quot;)) %&gt;%
+  
+  # keep only SNP with pvalue &lt; 0.05: it makes the plot realisation way faster
+  filter( P&lt;0.1 ) %&gt;%   # | SNP %in% sample(data$SNP, 150000) 
+  
+  # Add a cumulative position colummn to the data set
+  arrange(CHR, BP) %&gt;%
+  mutate( BPcum=BP+tot) %&gt;%
+  
+  # Add clumping information
+  mutate( is_major=ifelse(SNP %in% clump$SNP &amp; P&lt;10e-8, &quot;yes&quot;, &quot;no&quot;)) %&gt;%
+  mutate( is_clump=ifelse(SNP %in% Hit_SNP, &quot;yes&quot;, &quot;no&quot;))
+  
+# -------- prepare X axis
+axisdf = don %&gt;% group_by(CHR) %&gt;% summarize(center=( max(BPcum) + min(BPcum) ) / 2 )
+
+# -------- Basic plot
+ggplot(don, aes(x=BPcum, y=-log10(P))) +
+    
+    # Show all points
+    geom_point( aes(color=as.factor(CHR)), alpha=0.3, size=0.5) +
+    scale_color_manual(values = rep(c(&quot;grey&quot;, &quot;#69b3a2&quot;),44)) +
+    
+    # Add highlighted points for significant association:
+    geom_point(data=subset(don, is_clump==&quot;yes&quot;), color=&quot;orange&quot;, size=0.2) +
+    geom_point(data=subset(don, is_major==&quot;yes&quot;), color=&quot;red&quot;, size=4) +
+    geom_label_repel( data=subset(don, is_major==&quot;yes&quot;), aes(label=SNP), size=2.8) +
+      
+    # Make X axis:
+    scale_x_continuous( label = as.character(axisdf$CHR), breaks= axisdf$center ) +
+  
+    # Signicativity line
+    geom_hline(yintercept = 8, color=&quot;orange&quot;, size=0.7) +
+  
+    theme_bw() +
+    theme( 
+      legend.position=&quot;none&quot;,
+      panel.border = element_blank(),
+      panel.grid.major.x = element_blank(),
+      panel.grid.minor.x = element_blank()
+    )</code></pre>
+<p><img src="1_GWAS_files/figure-html/unnamed-chunk-1-1.png" width="960" /></p>
+</div>
+<div id="summary" class="section level1">
+<h1>Summary</h1>
+<hr />
+<p>Mendelian randomization techniques will use significant SNPs of this GWAS as instruments to test the causality of vitamin-D on several other traits. The number of significant loci must be at leat 10 to get a truthworthy result. Currently, the associated loci are:</p>
+<ul>
+<li><em>rs3755967</em>: chromosome 4 ~ 73Mb | gene: GC | <a href="https://genome.ucsc.edu/cgi-bin/hgTracks?db=hg38&amp;lastVirtModeType=default&amp;lastVirtModeExtraState=&amp;virtModeType=default&amp;virtMode=0&amp;nonVirtPosition=&amp;position=chr4%3A71004093%2D72598593&amp;hgsid=657472259_IeGzteVrW0qsItpQqUuZeaBnnFoc">Genome Browser</a> | Role = Vitamin D transport.</li>
+<li><em>rs12785878</em>: chromosome 11 ~ 79Mb | gene: NADSYN1 / DHCR7 | <a href="https://genome.ucsc.edu/cgi-bin/hgTracks?db=hg38&amp;lastVirtModeType=default&amp;lastVirtModeExtraState=&amp;virtModeType=default&amp;virtMode=0&amp;nonVirtPosition=&amp;position=chr11%3A71456153%2D71456652&amp;hgsid=657472259_IeGzteVrW0qsItpQqUuZeaBnnFoc">Genome Browser</a></li>
+<li><em>rs10741657</em>: chromosome 11 ~ 15Mb | gene: CYP2R1 | <a href="https://genome.ucsc.edu/cgi-bin/hgTracks?db=hg38&amp;lastVirtModeType=default&amp;lastVirtModeExtraState=&amp;virtModeType=default&amp;virtMode=0&amp;nonVirtPosition=&amp;position=chr11%3A14888332%2D14898331&amp;hgsid=657472259_IeGzteVrW0qsItpQqUuZeaBnnFoc">Genome Browser</a> | known role = hydroxylation.</li>
+<li><em>rs17216707</em>: chromosome 20 ~ 52Mb | gene: CYP24A1 | <a href="https://genome.ucsc.edu/cgi-bin/hgTracks?db=hg38&amp;lastVirtModeType=default&amp;lastVirtModeExtraState=&amp;virtModeType=default&amp;virtMode=0&amp;nonVirtPosition=&amp;position=chr20%3A51610823%2D56620822&amp;hgsid=657472259_IeGzteVrW0qsItpQqUuZeaBnnFoc">Genome Browser</a> | Role = Catabolism.</li>
+<li><em>rs10745742</em>: chromosome 12 ~ 94Mb | gene: AMDHD1 | <a href="https://genome.ucsc.edu/cgi-bin/hgTracks?db=hg38&amp;lastVirtModeType=default&amp;lastVirtModeExtraState=&amp;virtModeType=default&amp;virtMode=0&amp;nonVirtPosition=&amp;position=chr12%3A95939701%2D95989800&amp;hgsid=657472259_IeGzteVrW0qsItpQqUuZeaBnnFoc">Genome Browser</a></li>
+<li><em>rs8018720</em>: chromosome 14 ~ 38Mb | gene: SEC23A | <a href="https://genome.ucsc.edu/cgi-bin/hgTracks?db=hg38&amp;lastVirtModeType=default&amp;lastVirtModeExtraState=&amp;virtModeType=default&amp;virtMode=0&amp;nonVirtPosition=&amp;position=chr14%3A39086731%2D39087231&amp;hgsid=657472259_IeGzteVrW0qsItpQqUuZeaBnnFoc">Genome Browser</a></li>
+</ul>
+</div>
+
+<br><br>
+<hr />
+<p style="text-align: center; font-size: 80%">A work by <a href="https://github.com/holtzy/">Yan Holtz</a></p>
+<p style="text-align: center; font-size: 80%"><span style="color: #808080;"><em>Yan.holtz.data@gmail.com</em></span></p>
+
+<!-- Add icon library -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+<!-- Add font awesome icons -->
+<p style="text-align: center;">
+	<a href="https://twitter.com/r_graph_gallery?lang=en" class="fa fa-twitter"></a>
+	<a href="https://www.linkedin.com/in/yan-holtz-2477534a/" class="fa fa-linkedin"></a>
+	<a href="https://github.com/holtzy/" class="fa fa-github"></a>
+</p>
+
+
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

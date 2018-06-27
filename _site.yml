@@ -1,0 +1,30 @@
+name: "Vitamin-D GWAS in the UKB"
+output_dir: "."
+navbar:
+  title: "Vitamin-D | Causality"
+  right:
+    - text: "Intro"
+      href: index.html
+    - text: "GWAS"
+      href: 1_GWAS.html
+    - text: "GSMR"
+      href: 2_GSMR.html
+    - text: "LDSC"
+      href: 3_LDSC.html
+    - text: "mtCOJO"
+      href: 4_mtCOJO.html
+
+      
+      
+output:
+  html_document:
+      theme: "lumen"
+      css: style.css
+      toc: FALSE
+      toc_float: TRUE
+      toc_depth: 2
+      number_sections: FALSE
+      df_print: "paged"
+      code_folding: "hide"
+      includes: 
+        after_body: footer.html

@@ -1,0 +1,682 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+
+<meta charset="utf-8" />
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="pandoc" />
+
+
+
+
+<title>LD score regression: exploring genetic correlations between traits</title>
+
+<script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/lumen.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<script src="site_libs/navigation-1.1/codefolding.js"></script>
+<link href="site_libs/highlightjs-9.12.0/default.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+<link href="site_libs/pagedtable-1.1/css/pagedtable.css" rel="stylesheet" />
+<script src="site_libs/pagedtable-1.1/js/pagedtable.js"></script>
+<script src="site_libs/htmlwidgets-1.2/htmlwidgets.js"></script>
+<script src="site_libs/plotly-binding-4.7.1/plotly.js"></script>
+<script src="site_libs/typedarray-0.1/typedarray.min.js"></script>
+<link href="site_libs/crosstalk-1.0.0/css/crosstalk.css" rel="stylesheet" />
+<script src="site_libs/crosstalk-1.0.0/js/crosstalk.min.js"></script>
+<link href="site_libs/plotlyjs-1.29.2/plotly-htmlwidgets.css" rel="stylesheet" />
+<script src="site_libs/plotlyjs-1.29.2/plotly-latest.min.js"></script>
+
+<style type="text/css">code{white-space: pre;}</style>
+<style type="text/css">
+  pre:not([class]) {
+    background-color: white;
+  }
+</style>
+<script type="text/javascript">
+if (window.hljs) {
+  hljs.configure({languages: []});
+  hljs.initHighlightingOnLoad();
+  if (document.readyState && document.readyState === "complete") {
+    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
+  }
+}
+</script>
+
+
+
+<style type="text/css">
+h1 {
+  font-size: 34px;
+}
+h1.title {
+  font-size: 38px;
+}
+h2 {
+  font-size: 30px;
+}
+h3 {
+  font-size: 24px;
+}
+h4 {
+  font-size: 18px;
+}
+h5 {
+  font-size: 16px;
+}
+h6 {
+  font-size: 12px;
+}
+.table th:not([align]) {
+  text-align: left;
+}
+</style>
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+
+</head>
+
+<body>
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+code {
+  color: inherit;
+  background-color: rgba(0, 0, 0, 0.04);
+}
+img {
+  max-width:100%;
+  height: auto;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+</style>
+
+
+<style type="text/css">
+/* padding for bootstrap navbar */
+body {
+  padding-top: 54px;
+  padding-bottom: 40px;
+}
+/* offset scroll position for anchor links (for fixed navbar)  */
+.section h1 {
+  padding-top: 59px;
+  margin-top: -59px;
+}
+
+.section h2 {
+  padding-top: 59px;
+  margin-top: -59px;
+}
+.section h3 {
+  padding-top: 59px;
+  margin-top: -59px;
+}
+.section h4 {
+  padding-top: 59px;
+  margin-top: -59px;
+}
+.section h5 {
+  padding-top: 59px;
+  margin-top: -59px;
+}
+.section h6 {
+  padding-top: 59px;
+  margin-top: -59px;
+}
+</style>
+
+<script>
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark it active
+  menuAnchor.parent().addClass('active');
+
+  // if it's got a parent navbar menu mark it active as well
+  menuAnchor.closest('li.dropdown').addClass('active');
+});
+</script>
+
+
+<div class="container-fluid main-container">
+
+<!-- tabsets -->
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+</script>
+
+<!-- code folding -->
+<style type="text/css">
+.code-folding-btn { margin-bottom: 4px; }
+</style>
+<script>
+$(document).ready(function () {
+  window.initializeCodeFolding("hide" === "show");
+});
+</script>
+
+
+
+
+
+
+<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html">Vitamin-D | Causality</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        <li>
+  <a href="index.html">Intro</a>
+</li>
+<li>
+  <a href="1_GWAS.html">GWAS</a>
+</li>
+<li>
+  <a href="2_GSMR.html">GSMR</a>
+</li>
+<li>
+  <a href="3_LDSC.html">LDSC</a>
+</li>
+<li>
+  <a href="4_mtCOJO.html">mtCOJO</a>
+</li>
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div class="fluid-row" id="header">
+
+<div class="btn-group pull-right">
+<button type="button" class="btn btn-default btn-xs dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span>Code</span> <span class="caret"></span></button>
+<ul class="dropdown-menu" style="min-width: 50px;">
+<li><a id="rmd-show-all-code" href="#">Show All Code</a></li>
+<li><a id="rmd-hide-all-code" href="#">Hide All Code</a></li>
+</ul>
+</div>
+
+
+
+<h1 class="title toc-ignore">LD score regression: exploring genetic correlations between traits</h1>
+
+</div>
+
+
+<hr>
+<p><em>Yan Holtz, Zhihong Zhu, Julanne Frater, Perry Bartlett, Jian Yang, John McGrath</em></p>
+<hr>
+<div id="installing-ldsc" class="section level1">
+<h1>Installing LDSC</h1>
+<hr />
+<p>I lost a few hours of my life installing the <a href="%22https://github.com/bulik/ldsc%22">LDSC software</a> properly. Here are a few hints to do it faster next time. Important:</p>
+<ul>
+<li>Install anaconda with python <strong>version 2</strong>, not 3</li>
+<li>When calling LDSC, I must use the python version stored in the lDSC folder, not the default one.</li>
+</ul>
+<pre class="r"><code>#Delta
+cd /shares/compbio/Group-Wray/YanHoltz/SOFT
+git clone https://github.com/bulik/ldsc.git
+
+# Then install Anaconda. Warning: must be version 2 of python, not 3.
+cd /shares/compbio/Group-Wray/YanHoltz/SOFT
+wget https://repo.anaconda.com/archive/Anaconda2-5.1.0-Linux-x86_64.sh
+#start installation in /shares/compbio/Group-Wray/YanHoltz/SOFT
+
+# Then follow https://github.com/bulik/ldsc
+
+# To have help:
+/shares/compbio/Group-Wray/YanHoltz/SOFT/ldsc/ldsc.py -h
+
+# I also download LD scrore provided by LDSC:
+wget https://data.broadinstitute.org/alkesgroup/LDSCORE/eur_w_ld_chr.tar.bz2
+tar -xvjf eur_w_ld_chr.tar.bz2</code></pre>
+</div>
+<div id="material" class="section level1">
+<h1>Material</h1>
+<hr />
+<p>LD score regression test is run to check the genetic correlation between Vitamin-D concentration and GWAS summary statistics for traits potentially influenced by vitamin D concentration. Note that all outcome gwases are listed in <a href="">supplementary file</a> with their associated publication and main features. 75 traits are considered and divided in three categories.</p>
+<ul>
+<li>Primary traits: 28 traits and diseases with a strong prior for vitamin D effect.</li>
+<li>Secondary traits: 35 traits and diseases with no prior for vitamin D effect.</li>
+<li>Risk factors: 12 traits potentially involved in the mechanism.</li>
+</ul>
+</div>
+<div id="method" class="section level1">
+<h1>Method</h1>
+<hr />
+<p>Here is the script to compute genetic correlation between vitaminD and every other traits based on GWAS summary statistics.</p>
+<ul>
+<li>This one computes it for a specific example.</li>
+</ul>
+<pre class="r"><code># Good folder
+cd /shares/compbio/Group-Wray/YanHoltz/VITAMIND_XIA_ET_AL/4_LDSC/GENET_COR
+
+# GWAS result at good format: snpid hg18chr bp a1 a2 or se pval info ngt CEUaf
+cat /shares/compbio/Group-Wray/YanHoltz/DATA/GWAS/XiaEtAl_VitaminD/GWAS_vitaminD_XiaEtAL.ma | awk &#39;{print $1, $2, $3, $7, $5, $8}&#39; &gt; input.txt
+cat /shares/compbio/Group-Wray/YanHoltz/DATA/GWAS/GWAS_SUMSTAT/alzheimers_igap_2013.txt | awk &#39;{print $1, $2, $3, $7, $5, $8}&#39; &gt; alz.txt
+
+# Munge. Be careful to call the python version which is IN ldsc.
+/shares/compbio/Group-Wray/YanHoltz/SOFT/anaconda3/envs/ldsc/bin/python /shares/compbio/Group-Wray/YanHoltz/SOFT/ldsc/munge_sumstats.py \
+--sumstats input.txt \
+--out input \
+--merge-alleles /shares/compbio/Group-Wray/YanHoltz/SOFT/ldsc/eur_w_ld_chr/w_hm3.snplist
+
+# Munge. Be careful to call the python version which is IN ldsc.
+/shares/compbio/Group-Wray/YanHoltz/SOFT/anaconda3/envs/ldsc/bin/python /shares/compbio/Group-Wray/YanHoltz/SOFT/ldsc/munge_sumstats.py \
+--sumstats alz.txt \
+--N 79000 \
+--out alz \
+--merge-alleles /shares/compbio/Group-Wray/YanHoltz/SOFT/ldsc/eur_w_ld_chr/w_hm3.snplist
+
+# LD Score Regression
+/shares/compbio/Group-Wray/YanHoltz/SOFT/anaconda3/envs/ldsc/bin/python /shares/compbio/Group-Wray/YanHoltz/SOFT/ldsc/ldsc.py \
+--rg input.sumstats.gz,alz.sumstats.gz \
+--ref-ld-chr /shares/compbio/Group-Wray/YanHoltz/SOFT/ldsc/eur_w_ld_chr/ \
+--w-ld-chr /shares/compbio/Group-Wray/YanHoltz/SOFT/ldsc/eur_w_ld_chr/ \
+--out vitD_alz</code></pre>
+<ul>
+<li>this one does it between Vitamin D and every GWAS result of my analysis</li>
+</ul>
+<pre class="r"><code># Good folder
+cd /shares/compbio/Group-Wray/YanHoltz/VITAMIND_XIA_ET_AL/4_LDSC/GENET_COR
+
+# Reformat and mudge each GWAS summary statistics you wanna study
+for i in /shares/compbio/Group-Wray/YanHoltz/DATA/GWAS/GWAS_SUMSTAT/* ; do
+  filename=$(echo $i | sed &#39;s/.*UMSTAT\///&#39;) ;
+  echo $filename
+  echo &quot;cat $i | awk &#39;{print \$1, \$2, \$3, \$7, \$5, \$8}&#39; &gt; ${filename}_ready&quot; &gt; script_${filename}
+  echo &quot;/shares/compbio/Group-Wray/YanHoltz/SOFT/anaconda3/envs/ldsc/bin/python /shares/compbio/Group-Wray/YanHoltz/SOFT/ldsc/munge_sumstats.py --sumstats ${filename}_ready --out ${filename} --merge-alleles /shares/compbio/Group-Wray/YanHoltz/SOFT/ldsc/eur_w_ld_chr/w_hm3.snplist&quot; &gt;&gt; script_${filename}
+  chmod 777 script_${filename}
+  tmp_command=$(echo ./script_${filename})
+  echo $tmp_command
+  qsubshcom &quot;$tmp_command&quot; 1 5G munge 10:00:00 &quot;&quot;
+done
+
+# Idem for Vitamin D
+cat /shares/compbio/Group-Wray/YanHoltz/DATA/GWAS/XiaEtAl_VitaminD/GWAS_vitaminD_XiaEtAL.ma | awk &#39;{print $1, $2, $3, $7, $5, $8}&#39; &gt; input.txt
+/shares/compbio/Group-Wray/YanHoltz/SOFT/anaconda3/envs/ldsc/bin/python /shares/compbio/Group-Wray/YanHoltz/SOFT/ldsc/munge_sumstats.py \
+--sumstats input.txt \
+--out input \
+--merge-alleles /shares/compbio/Group-Wray/YanHoltz/SOFT/ldsc/eur_w_ld_chr/w_hm3.snplist
+
+# Clean
+rm *ready *log script*
+
+# Run LD score regression for all of them
+for i in *sumstats.gz ; do
+  filename=$(echo $i | sed &#39;s/.sumstats.gz//&#39;)
+  echo $filename;
+  echo &quot;/shares/compbio/Group-Wray/YanHoltz/SOFT/anaconda3/envs/ldsc/bin/python /shares/compbio/Group-Wray/YanHoltz/SOFT/ldsc/ldsc.py \
+    --rg input.sumstats.gz,$i \
+    --ref-ld-chr /shares/compbio/Group-Wray/YanHoltz/SOFT/ldsc/eur_w_ld_chr/ \
+    --w-ld-chr /shares/compbio/Group-Wray/YanHoltz/SOFT/ldsc/eur_w_ld_chr/ \
+    --out vitD_${filename}&quot; &gt; script_${filename}
+  chmod 777 script_${filename}
+  tmp_command=$(echo ./script_${filename})
+  echo $tmp_command
+  qsubshcom &quot;$tmp_command&quot; 1 5G genet_cor 10:00:00 &quot;&quot;
+done
+  
+
+# Concatenate result in a clean file
+cat vit*log | grep -B1 &quot;^input&quot; | head -1 | uniq &gt; genetic_correlation.txt
+cat vit*log | grep &quot;^input&quot; &gt;&gt; genetic_correlation.txt
+
+# transfer locally
+cd /Users/y.holtz/Dropbox/QBI/4_UK_BIOBANK_GWAS_PROJECT/VitaminD-GWAS/0_DATA
+scp  y.holtz@delta.imb.uq.edu.au:/shares/compbio/Group-Wray/YanHoltz/VITAMIND_XIA_ET_AL/4_LDSC/GENET_COR/genetic_correlation.txt  .
+
+# Clean
+rm -r job_reports *log script*</code></pre>
+<ul>
+<li>Last one between every risk factors and all other traits</li>
+</ul>
+<pre class="r"><code># NOTE: the previous chunk of code include the mudging part that is necessary here
+
+# Prepare vitamin D
+cat /shares/compbio/Group-Wray/YanHoltz/DATA/GWAS/XiaEtAl_VitaminD/GWAS_vitaminD_XiaEtAL.ma | awk &#39;{print $1, $2, $3, $7, $5, $8}&#39; &gt; vitaminD.txt
+/shares/compbio/Group-Wray/YanHoltz/SOFT/anaconda3/envs/ldsc/bin/python /shares/compbio/Group-Wray/YanHoltz/SOFT/ldsc/munge_sumstats.py \
+--sumstats vitaminD.txt \
+--out vitaminD \
+--merge-alleles /shares/compbio/Group-Wray/YanHoltz/SOFT/ldsc/eur_w_ld_chr/w_hm3.snplist
+
+
+# Make a list of risk factors
+listRisk=$( echo bmi_giant_2015.txt.sumstats.gz dbp_ukb_v1_2016.txt.sumstats.gz eduyears_ssgac_2016.txt.sumstats.gz hdl_glgc_2013.txt.sumstats.gz height_giant_2014.txt.sumstats.gz ldl_glgc_2013.txt.sumstats.gz ukbEUR_IPAQG_cojo.txt.sumstats.gz  ukbEUR_SI_cojo.txt.sumstats.gz sbp_ukb_v1_2016.txt.sumstats.gz  GWAS_tanning_UKBB.ma.sumstats.gz whradjbmi_giant_2015.txt.sumstats.gz vitaminD.sumstats.gz)
+
+# For each risk:
+for i in $(echo $listRisk) ; do
+
+  # Show where we are
+  filename1=$(echo $i | sed &#39;s/.sumstats.gz//&#39; )
+  echo $filename1
+
+  # Run LD score regression for every pairs
+  for j in *sumstats.gz ; do
+    filename2=$(echo $j | sed &#39;s/.sumstats.gz//&#39; )
+    echo &quot;/shares/compbio/Group-Wray/YanHoltz/SOFT/anaconda3/envs/ldsc/bin/python /shares/compbio/Group-Wray/YanHoltz/SOFT/ldsc/ldsc.py \
+      --rg $i,$j \
+      --ref-ld-chr /shares/compbio/Group-Wray/YanHoltz/SOFT/ldsc/eur_w_ld_chr/ \
+      --w-ld-chr /shares/compbio/Group-Wray/YanHoltz/SOFT/ldsc/eur_w_ld_chr/ \
+      --out vitD_${filename1}_${filename2}&quot; &gt; script_${filename1}__${filename2}
+    chmod 777 script_${filename1}__${filename2}
+    tmp_command=$(echo ./script_${filename1}__${filename2})
+    qsubshcom &quot;$tmp_command&quot; 1 5G genet_cor 10:00:00 &quot;&quot;
+  done
+  sleep 40
+done
+  
+# Concatenate result in a clean file
+cat vit*log | grep -A1 &quot;^p1&quot; | head -1 | uniq &gt; genetic_correlation_riskFactor.txt
+cat vit*log | grep -A1 &quot;^p1&quot; | grep -v &quot;h2_obs&quot; | grep -v &quot;^-&quot; &gt;&gt; genetic_correlation_riskFactor.txt
+
+# transfer locally
+cd /Users/y.holtz/Dropbox/QBI/4_UK_BIOBANK_GWAS_PROJECT/VitaminD-Causality/0_DATA
+scp  y.holtz@delta.imb.uq.edu.au:/shares/compbio/Group-Wray/YanHoltz/VITAMIND_XIA_ET_AL/4_LDSC/GENET_COR/genetic_correlation_riskFactor.txt  .
+
+# Clean
+rm -r job_reports *log script*</code></pre>
+</div>
+<div id="genetic-correlation-between-vitamin-d-and-traits" class="section level1">
+<h1>Genetic correlation between Vitamin-D and traits</h1>
+<hr />
+<p>Here is the result for the genetic correlation between vitamin-D and other traits. Three graphics are provided, highlighting primary traits, secondary traits and risk factors. A few explanation to read the figure:</p>
+<ul>
+<li><em>red dots</em> means that the observed genetic correlation is not significantly different from 0. <em>blue dots</em> otherwise.</li>
+<li><em>grey circles</em> next to the trait name represents the heritability.</li>
+<li>Genetic correlation are distributed between -0.12 and 0.12.</li>
+</ul>
+<pre class="r"><code># read the genet correlation
+data &lt;- read.table(&quot;0_DATA/genetic_correlation.txt&quot;, header=T)
+
+# Read the meaning of files:
+library(gdata)
+meaning=read.xls(&quot;0_DATA/list_of_traits_GSMR.xlsx&quot;, header=T)
+
+# Merge
+data &lt;- data %&gt;% 
+  mutate(p2=gsub(&quot;.sumstats.gz&quot;,&quot;&quot;,p2)) %&gt;%
+  left_join(meaning, by=c(&quot;p2&quot;=&quot;File&quot;))
+
+# Show trait important
+data %&gt;%
+  filter(Group==&quot;Primary&quot;) %&gt;%
+  arrange(rg) %&gt;%
+  mutate(signif=ifelse(p&lt;0.05,&quot;signif&quot;,&quot;non signif&quot;)) %&gt;%
+  mutate(Trait=factor(Trait, unique(Trait))) %&gt;%
+  ggplot( aes(x=Trait, y=rg, color=signif)) +
+    #geom_segment( aes(x=Trait, xend=Trait, y=0, yend=rg), color=&quot;grey&quot;) +
+    geom_errorbar(aes(x=Trait, ymin=rg-se, ymax=rg+se), alpha=0.5) +
+    geom_point(size=2) +
+    geom_point( aes(x=Trait, y=-0.21, size=h2_obs), color=&quot;grey&quot;, alpha=0.3) +
+    coord_flip() +
+    theme_ipsum() +
+    ylab(&quot;Primary traits&quot;) +
+    xlab(&quot;&quot;) +
+    theme(
+      panel.grid.major.y = element_blank()
+    ) +
+    geom_hline(yintercept=0) +
+    ggtitle(&quot;Genetic correlation with Vitamin-D&quot;)</code></pre>
+<p><img src="3_LDSC_files/figure-html/unnamed-chunk-6-1.png" width="864" style="display: block; margin: auto;" /></p>
+<pre class="r"><code># Show trait important
+data %&gt;%
+  filter(Group==&quot;Secondary&quot;) %&gt;%
+  arrange(rg) %&gt;%
+  mutate(signif=ifelse(p&lt;0.05,&quot;signif&quot;,&quot;non signif&quot;)) %&gt;%
+  mutate(Trait=factor(Trait, unique(Trait))) %&gt;%
+  ggplot( aes(x=Trait, y=rg, color=signif)) +
+    #geom_segment( aes(x=Trait, xend=Trait, y=0, yend=rg), color=&quot;grey&quot;) +
+    geom_errorbar(aes(x=Trait, ymin=rg-se, ymax=rg+se), alpha=0.5) +
+    geom_point(size=2) +
+    geom_point( aes(x=Trait, y=-0.23, size=h2_obs), color=&quot;grey&quot;, alpha=0.3) +
+    coord_flip() +
+    theme_ipsum() +
+    ylab(&quot;Secondary traits&quot;) +
+    xlab(&quot;&quot;) +
+    theme(
+      panel.grid.major.y = element_blank()
+    ) +
+    geom_hline(yintercept=0) +
+    ggtitle(&quot;Genetic correlation with Vitamin-D&quot;)</code></pre>
+<p><img src="3_LDSC_files/figure-html/unnamed-chunk-7-1.png" width="864" style="display: block; margin: auto;" /></p>
+<pre class="r"><code># Show trait important
+data %&gt;%
+  filter(Group==&quot;Risk&quot;) %&gt;%
+  arrange(rg) %&gt;%
+  mutate(signif=ifelse(p&lt;0.05,&quot;signif&quot;,&quot;non signif&quot;)) %&gt;%
+  mutate(Trait=factor(Trait, unique(Trait))) %&gt;%
+  ggplot( aes(x=Trait, y=rg, color=signif)) +
+    #geom_segment( aes(x=Trait, xend=Trait, y=0, yend=rg), color=&quot;grey&quot;) +
+    geom_errorbar(aes(x=Trait, ymin=rg-se, ymax=rg+se), alpha=0.5) +
+    geom_point(size=2) +
+    geom_point( aes(x=Trait, y=-0.23, size=h2_obs), color=&quot;grey&quot;, alpha=0.3) +
+    coord_flip() +
+    theme_ipsum() +
+    ylab(&quot;Genetic correlation&quot;) +
+    xlab(&quot;&quot;) +
+    theme(
+      panel.grid.major.y = element_blank()
+    ) +
+    geom_hline(yintercept=0) +
+    ggtitle(&quot;Risk factors&quot;)</code></pre>
+<p><img src="3_LDSC_files/figure-html/unnamed-chunk-8-1.png" width="864" style="display: block; margin: auto;" /></p>
+</div>
+<div id="genetic-correlation-between-risk-factors-and-traits" class="section level1">
+<h1>Genetic correlation between risk factors and traits</h1>
+<hr />
+<p>Here is the result for the genetic correlations between all the risk factors and the primary traits of this study. Vitamin-D is included. color ranges from dark blue (strong negative correlation) to dark red (strong positive correlation).</p>
+<pre class="r"><code># read the genet correlation
+data &lt;- read.table(&quot;0_DATA/genetic_correlation_riskFactor.txt&quot;, header=T)
+
+# Read the meaning of files:
+library(gdata)
+meaning &lt;- read.xls(&quot;0_DATA/list_of_traits_GSMR.xlsx&quot;, header=T) %&gt;%
+  select(Group, Trait, File)
+# Add one line for vitaminD
+meaning &lt;- rbind(meaning, data.frame(Group=&quot;Risk&quot;, Trait=&quot;Vitamin D&quot;, File=&quot;vitaminD&quot;))
+
+# Merge
+data &lt;- data %&gt;% 
+  mutate(p1=gsub(&quot;.sumstats.gz&quot;,&quot;&quot;,p1)) %&gt;%
+  mutate(p2=gsub(&quot;.sumstats.gz&quot;,&quot;&quot;,p2)) %&gt;%
+  left_join(meaning, by=c(&quot;p2&quot;=&quot;File&quot;)) %&gt;%
+  left_join(meaning, by=c(&quot;p1&quot;=&quot;File&quot;))
+
+# Need to spread
+data &lt;- data %&gt;%
+  filter(Group.x==&quot;Primary&quot;) %&gt;%
+  select(Trait.x, Trait.y, rg) %&gt;%
+  spread(key=Trait.x, value=rg, -2)
+
+# Transform in a matrix
+rownames(data) &lt;- data$Trait.y
+data &lt;- data %&gt;% select(-Trait.y) %&gt;% as.matrix()
+
+# Heatmap (note: file is saved as png)
+library(pheatmap)
+pheatmap(data,
+    legend = FALSE,
+    fontsize = 5.5,
+    display_numbers=TRUE, fontsize_number=4,
+    treeheight_row=0, treeheight_col = 0,
+    filename=&quot;IMG/genet_cor_heatmap_primary.png&quot;, witdh=7, height=4
+    )</code></pre>
+<br><br>
+<center>
+<img src="IMG/genet_cor_heatmap_primary.png" alt="img" width="1000" height="1000">
+</center>
+<p><br><br></p>
+<p>Same result for the secondary traits:</p>
+<pre class="r"><code># read the genet correlation
+data &lt;- read.table(&quot;0_DATA/genetic_correlation_riskFactor.txt&quot;, header=T)
+
+# Read the meaning of files:
+library(gdata)
+meaning &lt;- read.xls(&quot;0_DATA/list_of_traits_GSMR.xlsx&quot;, header=T) %&gt;%
+  select(Group, Trait, File)
+# Add one line for vitaminD
+meaning &lt;- rbind(meaning, data.frame(Group=&quot;Risk&quot;, Trait=&quot;Vitamin D&quot;, File=&quot;vitaminD&quot;))
+
+# Merge
+data &lt;- data %&gt;% 
+  mutate(p1=gsub(&quot;.sumstats.gz&quot;,&quot;&quot;,p1)) %&gt;%
+  mutate(p2=gsub(&quot;.sumstats.gz&quot;,&quot;&quot;,p2)) %&gt;%
+  left_join(meaning, by=c(&quot;p2&quot;=&quot;File&quot;)) %&gt;%
+  left_join(meaning, by=c(&quot;p1&quot;=&quot;File&quot;))
+
+# Need to spread
+data &lt;- data %&gt;%
+  filter(Group.x==&quot;Secondary&quot;) %&gt;%
+  select(Trait.x, Trait.y, rg) %&gt;%
+  spread(key=Trait.x, value=rg, -2)
+
+# Transform in a matrix
+rownames(data) &lt;- data$Trait.y
+data &lt;- data %&gt;% select(-Trait.y) %&gt;% as.matrix()
+
+# Heatmap (note: file is saved as png)
+library(pheatmap)
+pheatmap(data,
+    legend = FALSE,
+    fontsize = 5.5,
+    display_numbers=TRUE, fontsize_number=4,
+    treeheight_row=0, treeheight_col = 0,
+    filename=&quot;IMG/genet_cor_heatmap_secondary.png&quot;, witdh=7, height=4
+    )</code></pre>
+<br><br>
+<center>
+<img src="IMG/genet_cor_heatmap_secondary.png" alt="img" width="1000" height="1000">
+</center>
+<p><br><br></p>
+</div>
+<div id="genetic-correlation-vs-gsmr-results" class="section level1">
+<h1>Genetic correlation <em>vs</em> GSMR results</h1>
+<hr />
+<p>A strong genetic correlation does not necessarily involves a causal relationship, and reciprocaly. Here is the comparison between genetic correlation and causal effect between Vitamin D and all the traits.</p>
+<pre class="r"><code># read the genet correlation
+data &lt;- read.table(&quot;0_DATA/genetic_correlation_riskFactor.txt&quot;, header=T)
+
+# Read the meaning of files:
+library(gdata)
+meaning &lt;- read.xls(&quot;0_DATA/list_of_traits_GSMR.xlsx&quot;, header=T) %&gt;%
+  select(Group, Trait, File)
+# Add one line for vitaminD
+meaning &lt;- rbind(meaning, data.frame(Group=&quot;Risk&quot;, Trait=&quot;Vitamin D&quot;, File=&quot;vitaminD&quot;))
+
+# Merge
+data &lt;- data %&gt;% 
+  mutate(p1=gsub(&quot;.sumstats.gz&quot;,&quot;&quot;,p1)) %&gt;%
+  mutate(p2=gsub(&quot;.sumstats.gz&quot;,&quot;&quot;,p2)) %&gt;%
+  left_join(meaning, by=c(&quot;p2&quot;=&quot;File&quot;)) %&gt;%
+  left_join(meaning, by=c(&quot;p1&quot;=&quot;File&quot;))
+
+# read gsmr results
+gsmr &lt;- read.table(&quot;0_DATA/gsmr_result_vitaminDXiaEtAl.gsmr&quot;, header = T) %&gt;%
+  mutate(Outcome=gsub(&quot;_&quot;, &quot; &quot;, Outcome))
+
+# Select vitamin-D vs primary
+p &lt;- data %&gt;%
+  select(Group.x, Trait.x, Trait.y, rg) %&gt;%
+  filter(Trait.y==&quot;Vitamin D&quot;) %&gt;%
+  left_join( gsmr, by=c(&quot;Trait.x&quot;=&quot;Outcome&quot;)) %&gt;%
+  mutate(mytext=paste0(&quot;Trait: &quot;, Trait.x, &quot;\nGenetic Cor: &quot;,round(rg,2), &quot;\nBxy: &quot;, round(bxy,2))) %&gt;%
+  filter(!is.na(Group.x)) %&gt;%
+  
+  ggplot( aes(x=rg, y=bxy, text=mytext)) +
+    geom_point(aes(color=Group.x), size=2, alpha=0.6) +
+    theme_ipsum() +
+    scale_color_viridis(discrete=TRUE, name=&quot;&quot;) +
+    ylim(-0.5,0.5) +
+    xlim(-0.5,0.5) +
+    xlab(&quot;Genetic correlation&quot;) +
+    ylab(&quot;Causality effect&quot;)
+
+ggplotly(p, tooltip=&quot;text&quot;)</code></pre>
+<div id="6f813438d9ec" style="width:864px;height:576px;" class="plotly html-widget"></div>
+<script type="application/json" data-for="6f813438d9ec">{"x":{"data":[{"x":[-0.0785,-0.1057,0.0375,-0.0613,0.0186,0.0143,0.0045,-0.0628,0.1138,0.0462,-0.1025,0.0614,-0.105,0.0033,0.0503,0.068,0.0204,0.0215,0.0464,0.0484,0.0489,0.0257,0.02,0.0132,0.0548,-0.0195,-0.0139],"y":[-0.156573,-0.0451323,-0.127228,-0.471287,-0.270037,0.0591033,-0.0903309,-0.024106,0.00427858,-0.120643,-0.119132,-0.078836,-0.0133888,-0.139598,0.0145178,0.0365254,0.00865116,-0.0695121,-0.00294016,-0.198607,-0.0281917,0.0262072,0.1788,-0.0433942,-0.106079,0.00387763,-0.0753773],"text":["Trait: Dementia - Alzheimer<br />Genetic Cor: -0.08<br />Bxy: -0.16","Trait: Stroke<br />Genetic Cor: -0.11<br />Bxy: -0.05","Trait: Parkinson's Disease<br />Genetic Cor: 0.04<br />Bxy: -0.13","Trait: Alzheimer's Disease<br />Genetic Cor: -0.06<br />Bxy: -0.47","Trait: Autism Spectrum Disorder<br />Genetic Cor: 0.02<br />Bxy: -0.27","Trait: Bipolar Disorder<br />Genetic Cor: 0.01<br />Bxy: 0.06","Trait: Coronary Artery Disease<br />Genetic Cor: 0<br />Bxy: -0.09","Trait: Asthma<br />Genetic Cor: -0.06<br />Bxy: -0.02","Trait: Cancer<br />Genetic Cor: 0.11<br />Bxy: 0","Trait: Major depressive disorder<br />Genetic Cor: 0.05<br />Bxy: -0.12","Trait: Type II diabetes<br />Genetic Cor: -0.1<br />Bxy: -0.12","Trait: Dyslipidemia<br />Genetic Cor: 0.06<br />Bxy: -0.08","Trait: osteoporosis<br />Genetic Cor: -0.1<br />Bxy: -0.01","Trait: psychiatric disorder<br />Genetic Cor: 0<br />Bxy: -0.14","Trait: Disease count<br />Genetic Cor: 0.05<br />Bxy: 0.01","Trait: Depressive Symptoms<br />Genetic Cor: 0.07<br />Bxy: 0.04","Trait: Hematocrit<br />Genetic Cor: 0.02<br />Bxy: 0.01","Trait: Mean Corpuscular Hemoglobin<br />Genetic Cor: 0.02<br />Bxy: -0.07","Trait: Mean corpuscular volume<br />Genetic Cor: 0.05<br />Bxy: 0","Trait: Major Depressive Disorder<br />Genetic Cor: 0.05<br />Bxy: -0.2","Trait: Mean platelet volume <br />Genetic Cor: 0.05<br />Bxy: -0.03","Trait: Neuroticism<br />Genetic Cor: 0.03<br />Bxy: 0.03","Trait: Neutrophil<br />Genetic Cor: 0.02<br />Bxy: 0.18","Trait: Platelet ditribution width<br />Genetic Cor: 0.01<br />Bxy: -0.04","Trait: Rheumatoid Arthritis<br />Genetic Cor: 0.05<br />Bxy: -0.11","Trait: Red blood cell count<br />Genetic Cor: -0.02<br />Bxy: 0","Trait: Schizophrenia<br />Genetic Cor: -0.01<br />Bxy: -0.08"],"type":"scatter","mode":"markers","marker":{"autocolorscale":false,"color":"rgba(68,1,84,1)","opacity":0.6,"size":7.55905511811024,"symbol":"circle","line":{"width":1.88976377952756,"color":"rgba(68,1,84,1)"}},"hoveron":"points","name":"Primary","legendgroup":"Primary","showlegend":true,"xaxis":"x","yaxis":"y","hoverinfo":"text","frame":null},{"x":[0.0064,0.004,0.0335,-0.0203,0.0507,0.055,0.0486,0.0486,-0.0099,-0.0499,-0.0499,0.2216,-0.0374,null,-0.0913],"y":[-0.0548805,0.0390816,-0.0338941,-0.00177883,0.120789,0.11996,0.0116192,-0.00274909,-0.0610669,0.0116192,-0.00274909,-0.00825271,0.00165813,null,0.0137426],"text":["Trait: Tanning response to sun exposure<br />Genetic Cor: 0.01<br />Bxy: -0.05","Trait: BMI<br />Genetic Cor: 0<br />Bxy: 0.04","Trait: Diastolic blood pressure<br />Genetic Cor: 0.03<br />Bxy: -0.03","Trait: Edu Year<br />Genetic Cor: -0.02<br />Bxy: 0","Trait: HDL cholesterol<br />Genetic Cor: 0.05<br />Bxy: 0.12","Trait: Height<br />Genetic Cor: 0.06<br />Bxy: 0.12","Trait: LDL cholesterol<br />Genetic Cor: 0.05<br />Bxy: 0.01","Trait: LDL cholesterol<br />Genetic Cor: 0.05<br />Bxy: 0","Trait: Systolic blood pressure<br />Genetic Cor: -0.01<br />Bxy: -0.06","Trait: LDL cholesterol<br />Genetic Cor: -0.05<br />Bxy: 0.01","Trait: LDL cholesterol<br />Genetic Cor: -0.05<br />Bxy: 0","Trait: Outdoor activity (IPAQ)<br />Genetic Cor: 0.22<br />Bxy: -0.01","Trait: Smoking<br />Genetic Cor: -0.04<br />Bxy: 0","Trait: Vitamin D<br />Genetic Cor: 1<br />Bxy: NA","Trait: Waist-to-hip ratio adjusted for BMI<br />Genetic Cor: -0.09<br />Bxy: 0.01"],"type":"scatter","mode":"markers","marker":{"autocolorscale":false,"color":"rgba(33,144,140,1)","opacity":0.6,"size":7.55905511811024,"symbol":"circle","line":{"width":1.88976377952756,"color":"rgba(33,144,140,1)"}},"hoveron":"points","name":"Risk","legendgroup":"Risk","showlegend":true,"xaxis":"x","yaxis":"y","hoverinfo":"text","frame":null},{"x":[-0.0171,0.0066,-0.0445,0.1035,-0.037,0.0114,0.2655,0.1598,0.0041,0.2411,-0.022,-0.0998,-0.0276,0.1168,-0.0968,0.1278,-0.0883,0.0751,0.0296,0.0203,0.002,-0.0752,-0.0905,-0.1243,-0.1352,-0.0419,-0.001,0.0189,-0.0364,-0.0589,0.0365,-0.0926,0.0108,0.0034,0.0853],"y":[0.0855171,0.0956538,-0.0642234,0.273004,0.0548223,0.172684,-0.11376,0.146085,0.174548,-0.410881,-0.363941,0.0986047,0.451325,0.157792,0.166237,0.166394,0.285096,null,0.0430098,0.183935,-0.0354376,0.0126072,0.0382714,-0.0391354,0.0012178,0.0916145,0.0820581,0.188634,0.0871263,0.0974073,0.0323647,-0.0453709,-0.217529,null,null],"text":["Trait: Aged Macular Degeneration<br />Genetic Cor: -0.02<br />Bxy: 0.09","Trait: Basophil count<br />Genetic Cor: 0.01<br />Bxy: 0.1","Trait: Crohn's Disease<br />Genetic Cor: -0.04<br />Bxy: -0.06","Trait: allergic rhinitis<br />Genetic Cor: 0.1<br />Bxy: 0.27","Trait: cardiovascular disease<br />Genetic Cor: -0.04<br />Bxy: 0.05","Trait: dermatophytosis<br />Genetic Cor: 0.01<br />Bxy: 0.17","Trait: hemorrhoids<br />Genetic Cor: 0.27<br />Bxy: -0.11","Trait: hernia abdominopelvic cavity<br />Genetic Cor: 0.16<br />Bxy: 0.15","Trait: hypertensive disease<br />Genetic Cor: 0<br />Bxy: 0.17","Trait: insomnia<br />Genetic Cor: 0.24<br />Bxy: -0.41","Trait: Iron deficiency anemias<br />Genetic Cor: -0.02<br />Bxy: -0.36","Trait: Irritable bowel syndrome<br />Genetic Cor: -0.1<br />Bxy: 0.1","Trait: Macular degeneration<br />Genetic Cor: -0.03<br />Bxy: 0.45","Trait: Osteoarthritis<br />Genetic Cor: 0.12<br />Bxy: 0.16","Trait: Peptic ulcers<br />Genetic Cor: -0.1<br />Bxy: 0.17","Trait: Peripheral vascular disease<br />Genetic Cor: 0.13<br />Bxy: 0.17","Trait: acute reaction to stress<br />Genetic Cor: -0.09<br />Bxy: 0.29","Trait: Varicose veins of lower extremities<br />Genetic Cor: 0.08<br />Bxy: NA","Trait: Eosinophilic esophagitis<br />Genetic Cor: 0.03<br />Bxy: 0.04","Trait: Granulocyte count<br />Genetic Cor: 0.02<br />Bxy: 0.18","Trait: Hemoglobin<br />Genetic Cor: 0<br />Bxy: -0.04","Trait: Hippocampal volume<br />Genetic Cor: -0.08<br />Bxy: 0.01","Trait: IQ (UKB)<br />Genetic Cor: -0.09<br />Bxy: 0.04","Trait: IQ<br />Genetic Cor: -0.12<br />Bxy: -0.04","Trait: Immature Fraction of Reticulocytes<br />Genetic Cor: -0.14<br />Bxy: 0","Trait: Lymphocyte count<br />Genetic Cor: -0.04<br />Bxy: 0.09","Trait: Monocyte count<br />Genetic Cor: 0<br />Bxy: 0.08","Trait: Myeloid<br />Genetic Cor: 0.02<br />Bxy: 0.19","Trait: Plateletcrit<br />Genetic Cor: -0.04<br />Bxy: 0.09","Trait: Platelet Count<br />Genetic Cor: -0.06<br />Bxy: 0.1","Trait: Red cell distribution width<br />Genetic Cor: 0.04<br />Bxy: 0.03","Trait: Reticulocyte count<br />Genetic Cor: -0.09<br />Bxy: -0.05","Trait: Ulcerative Colitis<br />Genetic Cor: 0.01<br />Bxy: -0.22","Trait: White blood cell count<br />Genetic Cor: 0<br />Bxy: NA","Trait: Well being<br />Genetic Cor: 0.09<br />Bxy: NA"],"type":"scatter","mode":"markers","marker":{"autocolorscale":false,"color":"rgba(253,231,37,1)","opacity":0.6,"size":7.55905511811024,"symbol":"circle","line":{"width":1.88976377952756,"color":"rgba(253,231,37,1)"}},"hoveron":"points","name":"Secondary","legendgroup":"Secondary","showlegend":true,"xaxis":"x","yaxis":"y","hoverinfo":"text","frame":null}],"layout":{"margin":{"t":75.7758405977584,"r":39.8505603985056,"b":90.8260689082607,"l":93.8148609381486},"font":{"color":"rgba(0,0,0,1)","family":"Arial Narrow","size":15.2760481527605},"xaxis":{"domain":[0,1],"type":"linear","autorange":false,"range":[-0.55,0.55],"tickmode":"array","ticktext":["-0.50","-0.25","0.00","0.25","0.50"],"tickvals":[-0.5,-0.25,0,0.25,0.5],"categoryorder":"array","categoryarray":["-0.50","-0.25","0.00","0.25","0.50"],"nticks":null,"ticks":"","tickcolor":null,"ticklen":3.81901203819012,"tickwidth":0,"showticklabels":true,"tickfont":{"color":"rgba(77,77,77,1)","family":"Arial Narrow","size":15.2760481527605},"tickangle":-0,"showline":false,"linecolor":null,"linewidth":0,"showgrid":true,"gridcolor":"rgba(204,204,204,1)","gridwidth":0.265670402656704,"zeroline":false,"anchor":"y","title":"Genetic correlation","titlefont":{"color":"rgba(0,0,0,1)","family":"Arial Narrow","size":11.9551681195517},"hoverformat":".2f"},"yaxis":{"domain":[0,1],"type":"linear","autorange":false,"range":[-0.55,0.55],"tickmode":"array","ticktext":["-0.50","-0.25","0.00","0.25","0.50"],"tickvals":[-0.5,-0.25,0,0.25,0.5],"categoryorder":"array","categoryarray":["-0.50","-0.25","0.00","0.25","0.50"],"nticks":null,"ticks":"","tickcolor":null,"ticklen":3.81901203819012,"tickwidth":0,"showticklabels":true,"tickfont":{"color":"rgba(77,77,77,1)","family":"Arial Narrow","size":15.2760481527605},"tickangle":-0,"showline":false,"linecolor":null,"linewidth":0,"showgrid":true,"gridcolor":"rgba(204,204,204,1)","gridwidth":0.265670402656704,"zeroline":false,"anchor":"x","title":"Causality effect","titlefont":{"color":"rgba(0,0,0,1)","family":"Arial Narrow","size":11.9551681195517},"hoverformat":".2f"},"shapes":[{"type":"rect","fillcolor":null,"line":{"color":null,"width":0,"linetype":[]},"yref":"paper","xref":"paper","x0":0,"x1":1,"y0":0,"y1":1}],"showlegend":true,"legend":{"bgcolor":null,"bordercolor":null,"borderwidth":0,"font":{"color":"rgba(0,0,0,1)","family":"Arial Narrow","size":12.2208385222084},"y":0.924540682414698},"hovermode":"closest","barmode":"relative"},"config":{"doubleClick":"reset","modeBarButtonsToAdd":[{"name":"Collaborate","icon":{"width":1000,"ascent":500,"descent":-50,"path":"M487 375c7-10 9-23 5-36l-79-259c-3-12-11-23-22-31-11-8-22-12-35-12l-263 0c-15 0-29 5-43 15-13 10-23 23-28 37-5 13-5 25-1 37 0 0 0 3 1 7 1 5 1 8 1 11 0 2 0 4-1 6 0 3-1 5-1 6 1 2 2 4 3 6 1 2 2 4 4 6 2 3 4 5 5 7 5 7 9 16 13 26 4 10 7 19 9 26 0 2 0 5 0 9-1 4-1 6 0 8 0 2 2 5 4 8 3 3 5 5 5 7 4 6 8 15 12 26 4 11 7 19 7 26 1 1 0 4 0 9-1 4-1 7 0 8 1 2 3 5 6 8 4 4 6 6 6 7 4 5 8 13 13 24 4 11 7 20 7 28 1 1 0 4 0 7-1 3-1 6-1 7 0 2 1 4 3 6 1 1 3 4 5 6 2 3 3 5 5 6 1 2 3 5 4 9 2 3 3 7 5 10 1 3 2 6 4 10 2 4 4 7 6 9 2 3 4 5 7 7 3 2 7 3 11 3 3 0 8 0 13-1l0-1c7 2 12 2 14 2l218 0c14 0 25-5 32-16 8-10 10-23 6-37l-79-259c-7-22-13-37-20-43-7-7-19-10-37-10l-248 0c-5 0-9-2-11-5-2-3-2-7 0-12 4-13 18-20 41-20l264 0c5 0 10 2 16 5 5 3 8 6 10 11l85 282c2 5 2 10 2 17 7-3 13-7 17-13z m-304 0c-1-3-1-5 0-7 1-1 3-2 6-2l174 0c2 0 4 1 7 2 2 2 4 4 5 7l6 18c0 3 0 5-1 7-1 1-3 2-6 2l-173 0c-3 0-5-1-8-2-2-2-4-4-4-7z m-24-73c-1-3-1-5 0-7 2-2 3-2 6-2l174 0c2 0 5 0 7 2 3 2 4 4 5 7l6 18c1 2 0 5-1 6-1 2-3 3-5 3l-174 0c-3 0-5-1-7-3-3-1-4-4-5-6z"},"click":"function(gd) { \n        // is this being viewed in RStudio?\n        if (location.search == '?viewer_pane=1') {\n          alert('To learn about plotly for collaboration, visit:\\n https://cpsievert.github.io/plotly_book/plot-ly-for-collaboration.html');\n        } else {\n          window.open('https://cpsievert.github.io/plotly_book/plot-ly-for-collaboration.html', '_blank');\n        }\n      }"}],"cloud":false},"source":"A","attrs":{"6f814b37ace8":{"colour":{},"x":{},"y":{},"text":{},"type":"scatter"}},"cur_data":"6f814b37ace8","visdat":{"6f814b37ace8":["function (y) ","x"]},"highlight":{"on":"plotly_click","persistent":false,"dynamic":false,"selectize":false,"opacityDim":0.2,"selected":{"opacity":1}},"base_url":"https://plot.ly"},"evals":["config.modeBarButtonsToAdd.0.click"],"jsHooks":{"render":[{"code":"function(el, x) { var ctConfig = crosstalk.var('plotlyCrosstalkOpts').set({\"on\":\"plotly_click\",\"persistent\":false,\"dynamic\":false,\"selectize\":false,\"opacityDim\":0.2,\"selected\":{\"opacity\":1}}); }","data":null}]}}</script>
+<p>Globally there is no relationships between <code>Rg</code> and <code>Bxy</code>. Note that several figure cases exist:</p>
+<ul>
+<li>Vitamin D has no genetic correlation with iron deficiency anemias, but tends to have a negative causal effect on it.</li>
+<li>Vitamin D has no causal effect on outdoor activity but has a Rg of 0.22. This could make sense: people going outside can have more vitaminD as well (thus Rg), but vitamin D propably don’t push you to do outside sport.</li>
+</ul>
+</div>
+
+<br><br>
+<hr />
+<p style="text-align: center; font-size: 80%">A work by <a href="https://github.com/holtzy/">Yan Holtz</a></p>
+<p style="text-align: center; font-size: 80%"><span style="color: #808080;"><em>Yan.holtz.data@gmail.com</em></span></p>
+
+<!-- Add icon library -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+<!-- Add font awesome icons -->
+<p style="text-align: center;">
+	<a href="https://twitter.com/r_graph_gallery?lang=en" class="fa fa-twitter"></a>
+	<a href="https://www.linkedin.com/in/yan-holtz-2477534a/" class="fa fa-linkedin"></a>
+	<a href="https://github.com/holtzy/" class="fa fa-github"></a>
+</p>
+
+
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

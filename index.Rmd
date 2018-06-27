@@ -1,0 +1,42 @@
+---
+title: "Exploring the reciprocal predictive properties of genetic instruments related to 25 hydroxyvitamin D and a range of human phenotypes"
+---
+
+<hr>
+
+*Yan Holtz, Zhihong Zhu, Julanne Frater, Perry Bartlett, Jian Yang, John McGrath*
+
+<hr>
+
+<br><br>
+
+<u>Abstract</u>:
+
+<br><br><br><br>
+
+<u>Data analysis</u>: this document summarizes the data analysis leading to the results presented in the paper. It is organized as follow:
+
+- *GWAS description*: a quick description of the vitamin-D GWAS result that is the basis of the mendelian randomization pipeline.
+- *GSMR*: description of the GSMR pipeline to find out if Vitamin-D has a causal effect on several mental diseases.
+- *LDSC*: usage of LD score regression to assess heritability and genetic correlation with other traits.
+- *mtCOJO*: usage of the mtCOJO method to test the putative confounding effect of other risk factors.
+
+
+<br><br>
+
+<u>Note</u>: Some of the script described here are computationnaly intensive and thus run on 2 different clusters. See the code below for connection on the cluster. 
+
+```{r, eval=FALSE}
+# ------  DELTA -----------
+ssh y.holtz@delta.imb.uq.edu.au
+cd /shares/compbio/Group-Wray/YanHoltz/
+
+# Medici on delta:
+cd /gpfs/gpfs01/polaris/Q0286/
+
+# ------  INODE -----------
+ssh uqyholtz@inode.qbi.uq.edu.au
+/ibscratch/wrayvisscher/Yan_Holtz/
+```
+
+<u>Note</u>: This document is hosted in this [github repository]()

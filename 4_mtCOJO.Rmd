@@ -1,0 +1,331 @@
+---
+title: "mtCOJO: testing the potential implication of confounding risk factors"
+---
+<hr>
+
+*Yan Holtz, Zhihong Zhu, Julanne Frater, Perry Bartlett, Jian Yang, John McGrath*
+
+<hr>
+
+<br><br>
+```{r echo=FALSE, warning=FALSE, message=FALSE}
+# A few library
+library(tidyverse)
+library(DT)
+library(gdata)
+library(hrbrthemes)
+library(plotly)
+```
+
+
+#Material
+***
+
+[mtCOJO](http://cnsgenomics.com/software/gcta/#mtCOJO) allows to build a new GWAS summary statistics for a trait using summary statistics of one or several other risk factors. Here are the risk factor we considered in our study:
+
+- BMI
+- Diastolic blood pressure
+- Number of years of education
+- HDL cholesterol
+- Height
+- LDL cholesterol
+- Outdoor activity
+- Smoking
+- Systolic blood pressure
+- Tanning response
+- Waist to hip ratio
+
+We considered these risk factors `one by one` in a first step, and then considered them `jointly`.  
+
+*Note*: complete list of these risk factors with source and details is available [here]()
+
+
+
+
+
+
+#Method
+***
+The input of mtCOJO are:
+
+- **mbfile**:  individual level genotypes of a reference sample. We will use the Hapmap3 SNPs of the UKB population. This is used for LD estimation.
+- **mtcojo-file**: a list of the GWAS summary data and prevalence of diseases. first row is the target trait. Other rows are covariate.
+- **LD score references**: come from the [LDSC tool](https://github.com/bulik/ldsc).
+
+mtCOJO will provide a new GWAS summary statistics file per risk factor. GSMR will then be run on these new files.
+
+
+
+
+
+
+#Run mtCOJO
+***
+This script run `mtCOJO` using the vitamin-D GWAS and each risk factor GWAS one by one.
+```{r, eval=FALSE}
+# Specific repo
+cd /shares/compbio/Group-Wray/YanHoltz/VITAMIND_XIA_ET_AL/8_MTCOJO
+
+# Build mbfile
+ls  /gpfs/gpfs01/polaris/Q0286/UKBiobank/v2EURu_HM3/ukbEURu_imp_chr*bed | sed 's/.bed//' > mtcojo_mbfile.txt
+
+# Build mtcojo file. One per risk factor, then one for all.
+
+# BMI
+echo "vitaminD /shares/compbio/Group-Wray/YanHoltz/DATA/GWAS/XiaEtAl_VitaminD/GWAS_vitaminD_XiaEtAL.ma" > list_of_trait_BMI.txt
+echo "BMI /shares/compbio/Group-Wray/YanHoltz/DATA/GWAS/GWAS_SUMSTAT/bmi_giant_2015.txt" >> list_of_trait_BMI.txt
+tmp_command="gcta64 --mbfile mtcojo_mbfile.txt --mtcojo-file list_of_trait_BMI.txt --ref-ld-chr eur_w_ld_chr/ --w-ld-chr eur_w_ld_chr/ --out mtcojo_BMI_result_vitaminD"
+qsubshcom "$tmp_command" 1 30G mtCOJO 10:00:00 ""
+
+# DIASTOLIC BLOOD PRESSURE
+echo "vitaminD /shares/compbio/Group-Wray/YanHoltz/DATA/GWAS/XiaEtAl_VitaminD/GWAS_vitaminD_XiaEtAL.ma" > list_of_trait_DBP.txt
+echo "DBP /shares/compbio/Group-Wray/YanHoltz/DATA/GWAS/GWAS_SUMSTAT/dbp_ukb_v1_2016.txt" >> list_of_trait_DBP.txt
+tmp_command="gcta64 --mbfile mtcojo_mbfile.txt --mtcojo-file list_of_trait_DBP.txt --ref-ld-chr eur_w_ld_chr/ --w-ld-chr eur_w_ld_chr/ --out mtcojo_DBP_result_vitaminD"
+qsubshcom "$tmp_command" 1 30G mtCOJO 10:00:00 ""
+
+# EDU YEAR
+echo "vitaminD /shares/compbio/Group-Wray/YanHoltz/DATA/GWAS/XiaEtAl_VitaminD/GWAS_vitaminD_XiaEtAL.ma" > list_of_trait_EY.txt
+echo "EY /shares/compbio/Group-Wray/YanHoltz/DATA/GWAS/GWAS_SUMSTAT/eduyears_ssgac_2016.txt" >> list_of_trait_EY.txt
+tmp_command="gcta64 --mbfile mtcojo_mbfile.txt --mtcojo-file list_of_trait_EY.txt --ref-ld-chr eur_w_ld_chr/ --w-ld-chr eur_w_ld_chr/ --out mtcojo_EY_result_vitaminD"
+qsubshcom "$tmp_command" 1 30G mtCOJO 10:00:00 ""
+
+# HDL Cholesterol
+echo "vitaminD /shares/compbio/Group-Wray/YanHoltz/DATA/GWAS/XiaEtAl_VitaminD/GWAS_vitaminD_XiaEtAL.ma" > list_of_trait_HDL.txt
+echo "HDL /shares/compbio/Group-Wray/YanHoltz/DATA/GWAS/GWAS_SUMSTAT/hdl_glgc_2013.txt" >> list_of_trait_HDL.txt
+tmp_command="gcta64 --mbfile mtcojo_mbfile.txt --mtcojo-file list_of_trait_HDL.txt --ref-ld-chr eur_w_ld_chr/ --w-ld-chr eur_w_ld_chr/ --out mtcojo_HDL_result_vitaminD"
+qsubshcom "$tmp_command" 1 30G mtCOJO 10:00:00 ""
+
+# HEIGHT
+echo "vitaminD /shares/compbio/Group-Wray/YanHoltz/DATA/GWAS/XiaEtAl_VitaminD/GWAS_vitaminD_XiaEtAL.ma" > list_of_trait_height.txt
+echo "height /shares/compbio/Group-Wray/YanHoltz/DATA/GWAS/GWAS_SUMSTAT/height_giant_2014.txt" >> list_of_trait_height.txt
+tmp_command="gcta64 --mbfile mtcojo_mbfile.txt --mtcojo-file list_of_trait_height.txt --ref-ld-chr eur_w_ld_chr/ --w-ld-chr eur_w_ld_chr/ --out mtcojo_height_result_vitaminD"
+qsubshcom "$tmp_command" 1 30G mtCOJO 10:00:00 ""
+
+# LDL CHOLESTEROL
+echo "vitaminD /shares/compbio/Group-Wray/YanHoltz/DATA/GWAS/XiaEtAl_VitaminD/GWAS_vitaminD_XiaEtAL.ma" > list_of_trait_LDL.txt
+echo "LDL /shares/compbio/Group-Wray/YanHoltz/DATA/GWAS/GWAS_SUMSTAT/ldl_glgc_2013.txt" >> list_of_trait_LDL.txt
+tmp_command="gcta64 --mbfile mtcojo_mbfile.txt --mtcojo-file list_of_trait_LDL.txt --ref-ld-chr eur_w_ld_chr/ --w-ld-chr eur_w_ld_chr/ --out mtcojo_LDL_result_vitaminD"
+qsubshcom "$tmp_command" 1 30G mtCOJO 10:00:00 ""
+
+# OUTDOOR ACTIVITY (IPAQ)
+echo "vitaminD /shares/compbio/Group-Wray/YanHoltz/DATA/GWAS/XiaEtAl_VitaminD/GWAS_vitaminD_XiaEtAL.ma" > list_of_trait_IPAQ.txt
+echo "IPAQ /shares/compbio/Group-Wray/YanHoltz/DATA/GWAS/GWAS_SUMSTAT/ukbEUR_IPAQG_cojo.txt" >> list_of_trait_IPAQ.txt
+tmp_command="gcta64 --mbfile mtcojo_mbfile.txt --mtcojo-file list_of_trait_IPAQ.txt --ref-ld-chr eur_w_ld_chr/ --w-ld-chr eur_w_ld_chr/ --out mtcojo_IPAQ_result_vitaminD"
+qsubshcom "$tmp_command" 1 30G mtCOJO 10:00:00 ""
+
+# SMOKE
+echo "vitaminD /shares/compbio/Group-Wray/YanHoltz/DATA/GWAS/XiaEtAl_VitaminD/GWAS_vitaminD_XiaEtAL.ma" > list_of_trait_SMOKE.txt
+echo "SMOKE /shares/compbio/Group-Wray/YanHoltz/DATA/GWAS/GWAS_SUMSTAT/ukbEUR_SI_cojo.txt" >> list_of_trait_SMOKE.txt
+tmp_command="gcta64 --mbfile mtcojo_mbfile.txt --mtcojo-file list_of_trait_SMOKE.txt --ref-ld-chr eur_w_ld_chr/ --w-ld-chr eur_w_ld_chr/ --out mtcojo_SMOKE_result_vitaminD"
+qsubshcom "$tmp_command" 1 30G mtCOJO 10:00:00 ""
+
+# SYSTOLIC BLOOD PRESSURE (SBP)
+echo "vitaminD /shares/compbio/Group-Wray/YanHoltz/DATA/GWAS/XiaEtAl_VitaminD/GWAS_vitaminD_XiaEtAL.ma" > list_of_trait_SBP.txt
+echo "SBP /shares/compbio/Group-Wray/YanHoltz/DATA/GWAS/GWAS_SUMSTAT/sbp_ukb_v1_2016.txt" >> list_of_trait_SBP.txt
+tmp_command="gcta64 --mbfile mtcojo_mbfile.txt --mtcojo-file list_of_trait_SBP.txt --ref-ld-chr eur_w_ld_chr/ --w-ld-chr eur_w_ld_chr/ --out mtcojo_SBP_result_vitaminD"
+qsubshcom "$tmp_command" 1 30G mtCOJO 10:00:00 ""
+
+# TANNING RESPONSE (TR)
+echo "vitaminD /shares/compbio/Group-Wray/YanHoltz/DATA/GWAS/XiaEtAl_VitaminD/GWAS_vitaminD_XiaEtAL.ma" > list_of_trait_TR.txt
+echo "TR /shares/compbio/Group-Wray/YanHoltz/DATA/GWAS/GWAS_SUMSTAT/GWAS_tanning_UKBB.ma" >> list_of_trait_TR.txt
+tmp_command="gcta64 --mbfile mtcojo_mbfile.txt --mtcojo-file list_of_trait_TR.txt --ref-ld-chr eur_w_ld_chr/ --w-ld-chr eur_w_ld_chr/ --out mtcojo_TR_result_vitaminD"
+qsubshcom "$tmp_command" 1 30G mtCOJO 10:00:00 ""
+
+# WAIST TO HIP RATIO ADJUSTED
+echo "vitaminD /shares/compbio/Group-Wray/YanHoltz/DATA/GWAS/XiaEtAl_VitaminD/GWAS_vitaminD_XiaEtAL.ma" > list_of_trait_WHR.txt
+echo "WHR /shares/compbio/Group-Wray/YanHoltz/DATA/GWAS/GWAS_SUMSTAT/whradjbmi_giant_2015.txt" >> list_of_trait_WHR.txt
+tmp_command="gcta64 --mbfile mtcojo_mbfile.txt --mtcojo-file list_of_trait_WHR.txt --ref-ld-chr eur_w_ld_chr/ --w-ld-chr eur_w_ld_chr/ --out mtcojo_WHR_result_vitaminD"
+qsubshcom "$tmp_command" 1 30G mtCOJO 10:00:00 ""
+
+# ALL
+echo "vitaminD /shares/compbio/Group-Wray/YanHoltz/DATA/GWAS/XiaEtAl_VitaminD/GWAS_vitaminD_XiaEtAL.ma" > list_of_trait_ALL.txt
+echo "BMI /shares/compbio/Group-Wray/YanHoltz/DATA/GWAS/GWAS_SUMSTAT/height_giant_2014.txt" >> list_of_trait_ALL.txt
+echo "SMOKE /shares/compbio/Group-Wray/YanHoltz/DATA/GWAS/GWAS_SUMSTAT/ukbEUR_SI_cojo.txt" >> list_of_trait_ALL.txt
+tmp_command="gcta64 --mbfile mtcojo_mbfile.txt --mtcojo-file list_of_trait_ALL.txt --ref-ld-chr eur_w_ld_chr/ --w-ld-chr eur_w_ld_chr/ --out mtcojo_ALL_result_vitaminD"
+qsubshcom "$tmp_command" 1 30G mtCOJO 10:00:00 ""
+```
+
+I now have a several files called `mtcojo_*_result_vitaminD_result.mtcojo.cma` that are a GWAS summary statistics for Vitamin-D corrected for all my Risk factors.  
+
+Clean the folder to keep only these files:  
+```{r, eval=FALSE}
+# Clean
+rm -r job_reports  list_of_trait*  *log *badsnps qsub.2018.06.25.log mtcojo_mbfile.txt
+```
+
+
+
+
+
+#Run GSMR
+***
+I can run GSMR on this new GWAS summary statistics:
+```{r, eval=FALSE}
+# Loop on every new sumstat to send GSMR on them
+for myRiskFact in  $(ls mtcojo_*_result_vitaminD.mtcojo.cma | sed 's/.*cojo_//' | sed 's/_.*//') ; do
+  
+  # Echo
+  echo $myRiskFact ;
+
+  # Specific repo
+  cd /shares/compbio/Group-Wray/YanHoltz/VITAMIND_XIA_ET_AL/8_MTCOJO/
+  mkdir GSMR_$myRiskFact
+  cd /shares/compbio/Group-Wray/YanHoltz/VITAMIND_XIA_ET_AL/8_MTCOJO/GSMR_$myRiskFact
+  
+  # Prepare a file that gives the location of every b-file (one per chromosome)
+  ls /gpfs/gpfs01/polaris/Q0286/UKBiobank/v2EURu_HM3/ukbEURu_imp_chr*_v2_HM3_QC.bed | sed 's/.bed//' > gsmr_ref_data.txt
+  
+  # prepare a file that gives the link to the GWAS result for the risk factor = Vitamin D. After correction for risk factors
+  cat /shares/compbio/Group-Wray/YanHoltz/VITAMIND_XIA_ET_AL/8_MTCOJO/mtcojo_${myRiskFact}_result_vitaminD.mtcojo.cma | cut -f1-8 > file.ma
+  a=$(pwd)
+  echo "vitaminD $a/file.ma" > gsmr_exposure.txt
+  
+  # prepare ONE file that lists all the outcomes. This file has been build in Excel format locally
+  cp /shares/compbio/Group-Wray/YanHoltz/VITAMIND_XIA_ET_AL/3_GSMR/gsmr_outcome.txt .
+  
+  # Split this file: one file per outcome:
+  split -l 1 --numeric-suffixes gsmr_outcome.txt 
+  for i in x0* ; do a=$(echo $i | sed 's/x0/x/') ; mv $i $a ; done
+  
+  # send an array of GSMR
+  tmp_command="gcta64 --mbfile gsmr_ref_data.txt --gsmr-file gsmr_exposure.txt x{TASK_ID}  --gsmr-direction 0 --out gsmr_aftermtcojo${myRiskFact}_result_vitaminDXiaEtAl_{TASK_ID}"
+  qsubshcom "$tmp_command" 1 30G mtCOJO_GSMR_array 10:00:00 "-array=1-72"
+
+  # Back to main folder
+  cd ..
+  
+done
+```
+
+Then I need to clean the results in each folder and aggregate them in a summary file.
+
+```{r, eval=FALSE}
+# Once it's over, concatenate the results in a unique file
+for myRiskFact in  $(ls mtcojo_*_result_vitaminD.mtcojo.cma | sed 's/.*cojo_//' | sed 's/_.*//') ; do
+  cd /shares/compbio/Group-Wray/YanHoltz/VITAMIND_XIA_ET_AL/8_MTCOJO/GSMR_${myRiskFact}
+  cat gsmr_aftermtcojo*gsmr | head -1 > gsmr_aftermtcojo${myRiskFact}_result_vitaminDXiaEtAl.gsmr
+  cat gsmr_aftermtcojo*gsmr | grep -v "Exposure" >>  gsmr_aftermtcojo${myRiskFact}_result_vitaminDXiaEtAl.gsmr
+  mv gsmr_aftermtcojo${myRiskFact}_result_vitaminDXiaEtAl.gsmr ..
+  cd ..
+done
+
+# Clean
+rm -r GSMR*
+```
+
+
+Transfer the results locally for further analysis.
+```{bash, eval=FALSE}
+# Then from locally to delta
+cd /Users/y.holtz/Dropbox/QBI/4_UK_BIOBANK_GWAS_PROJECT/VitaminD-GWAS/0_DATA/MTCOJO_GSMR
+scp y.holtz@delta.imb.uq.edu.au:/shares/compbio/Group-Wray/YanHoltz/VITAMIND_XIA_ET_AL/8_MTCOJO/gsmr_aftermtcojo*_result_vitaminDXiaEtAl.gsmr .
+```
+
+
+
+
+
+#Result {.tabset}
+***
+
+The first step is to merge all the GSMR results. I'm gonna put together:
+
+- the initial gsmr result done with the Vitamin D GWAS summary statistics
+- all the gsmr results using the GWAS corrected by one trait with mt-COJO
+- the gsmr results using the GWAS corrected by all the traits with mt-COJO
+
+
+```{r, warning=FALSE, message=FALSE}
+# Show the information of GSMR withour mtCOJO
+initial <- read.table("0_DATA/gsmr_result_vitaminDXiaEtAl.gsmr", header = T) %>%
+    dplyr::select(Outcome, bxy, p, se)
+colnames(initial) <- c("Outcome", "bxy", "p", "se")
+
+# Read the new gsmr results
+all_new <- list.files("0_DATA/MTCOJO_GSMR")
+gsmr <- initial %>% mutate(name="initial")
+for(i in all_new){
+  new <- read.table(paste0("0_DATA/MTCOJO_GSMR/",i), header = T) %>% dplyr::select(Outcome, bxy, p, se)
+  new$name <-  i %>% gsub("gsmr_aftermtcojo", "", .) %>% gsub("_result_vitaminDXiaEtAl.gsmr", "", .)
+  gsmr <- rbind(gsmr, new)
+}
+
+# Correct the " "
+gsmr$Outcome <- gsub("_", " ", gsmr$Outcome)
+
+# The risk factors are encoded, I need to translate them
+gsmr$name <- recode(gsmr$name, ALL="All risk factors", EY="Education years", height="Height", IPAQ="Outdoor sport activity (IPAQ)", SMOKE="Smoking", TR="Tanning Response", WHR="Waist Hip Ratio corrected by BMI")
+
+# Read the meaning of files:
+meaning=read.xls("0_DATA/list_of_traits_GSMR.xlsx", header=T)
+primary <- gsmr %>% filter( Outcome %in% meaning$Trait[ which(meaning$Group=="Primary") ] )
+secondary <- gsmr %>% filter( Outcome %in% meaning$Trait[ which(meaning$Group!="Secondary") ] )
+
+# Compute thresholds
+thres_primary <- 0.05 / nrow(primary)
+thres_secondary <- 0.05 / nrow(secondary)
+```
+
+
+Now we can visualize the results:
+
+- Each row represents the gsmr results related to a primary outcome
+- The X axis represents the effect of vitamin-D on the outcome. If this effect is *positive*, then more vitamin-D leads to more of this outcome.
+- Big red circles represent the initial gsmr (see the gsmr tab for more details)
+- The small grey circles represent the gsmr result using vitamin-D GWAS sumstat corrected by a risk factor using mt-COJO.
+
+```{r, warning=FALSE, message=FALSE, fig.height=8, fig.width=9}
+
+# Plot
+p <- primary %>%
+  arrange(bxy) %>%
+  filter(!is.na(bxy) ) %>% 
+  mutate(Outcome=factor(Outcome, unique(Outcome))) %>%
+  mutate(significance=ifelse(p<thres_primary, "signif multi.testing", ifelse(p<0.05, "signif", "nonSignif") ) ) %>%
+  mutate( mycolor = ifelse(name=="initial","init","corec") ) %>%
+  mutate(mytext = name) %>%
+  ggplot( aes(x=Outcome, y=bxy, color=mycolor, size=mycolor, text=mytext)) +
+    geom_hline( yintercept=0 ) +
+    geom_point() +
+    scale_color_manual(values=c("grey", "red")) +
+    scale_size_manual(values=c(1,2)) +
+    coord_flip() +
+    theme_ipsum() +
+    theme( 
+      panel.grid.major.y = element_line(size=0.1),
+      legend.position="none"
+    ) +
+    ylab("Bxy (Effect size)") +
+    xlab("") 
+
+ggplotly(p, tooltip="text")
+```
+
+
+*Note*: grey dots tend to overlap, but all the risk factor corrections are always present, no missing data.
+
+*Note*: the figure is interactive: zoom in / hover dots for more info
+
+
+
+
+#Discussion
+***
+
+- Globally, the results after correction by mtCOJO (grey) are very close from the initial GSMR result (red). This indicates that the risk factor are not confounding effect on the role of vitamin-D on studied traits.
+
+- The behavior of `smoking` is interesting tough: it is always the risk factor that changes results the most. Example with bipolar disorder, osteoporosis, asthma, psychiatric disorders etc.
+
+- with real data I'll have to check if the significance of effects switches when using mtCOJO
+
+
+
+
+
+
+
+
+
+
+
+
