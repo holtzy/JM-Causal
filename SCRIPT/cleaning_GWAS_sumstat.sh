@@ -1,7 +1,13 @@
+# ----------------------------------------------------------------------------------------------
 # This script is related with the Vitamin D project
 # To run GSMR on several traits, I've collected many GWAS summary sumstat in the litterature.
-# To comply with GCTA format, I've cleaned these GAWAS sumstat: this is what this script does:
+# To comply with GCTA format, I've cleaned these GWAS sumstat
+# This script describe the cleaning I've done
+# ----------------------------------------------------------------------------------------------
 
+
+# Output format = GCTA format:
+# SNP A1 A2 FRQ BETA SE PVAL N
 
 # A few rules
 # - To go from Odd ratio to Beta, just use a log in awk
@@ -39,7 +45,7 @@ zcat Immunochip_FinalResults_LimitedDiscovery.txt  |  awk '{ if(NR>1 && $7>0.05 
 # ------ PARKINSON ---------- #
 # Reformat Parkinson's Disease data from Constanza. I need to add the allele frequency of each SNP
 ls /shares/compbio/Group-Wray/YanHoltz/DATA/ALLELE_FREQUENCY/*
-cd /shares/compbio/Group-Wray/YanHoltz/DATA/GWAS/GWAS_SUMSTAT 
+cd /shares/compbio/Group-Wray/YanHoltz/DATA/GWAS/GWAS_SUMSTAT
 echo "SNP A1 A2 freq b se p n" > tmp
 join <(cat META_ANALYSIS_10K23_beta_se_correctGC1_pdgene_sharing_280317.tbl | grep -v "^SNP" | sort -k 1,1) <(awk '{print $2, $6}' /shares/compbio/Group-Wray/YanHoltz/DATA/ALLELE_FREQUENCY/* | sort -k 1,1) | awk '{ print $1,$2,$3,$9,$4,$5,$6,100000}' >> tmp
 mv tmp META_ANALYSIS_10K23_beta_se_correctGC1_pdgene_sharing_280317.ma
@@ -86,6 +92,50 @@ join <(awk '{print $2, $5, $6}' /gpfs/gpfs01/polaris/Q0286/UKBiobank/v2EUR_impHR
 
 
 
+# ------ CHILD BIRTH LENGTH ---------- #
+
+# Comes from the EGG project: (Early Growth Genetics Consortium) -> http://egg-consortium.org
+
+# Use Wget to download data in delta, and unzip it.
+cd /shares/compbio/Group-Wray/YanHoltz/DATA/GWAS/GWAS_SUMSTAT/ORIGINAL_FILES
+wget http://egg-consortium.org/downloads/EGG-GWAS-BL.txt.gz
+gunzip EGG-GWAS-BL.txt.gz
+
+# I've got all the info except allele frequency. I need to add it.
+echo "SNP A1 A2 freq b se p n" > tmp
+join <( cat EGG-GWAS-BL.txt | grep -v "^CHR" | sort -t, -k 3) <(awk '{print $2, $6}' /shares/compbio/Group-Wray/YanHoltz/DATA/ALLELE_FREQUENCY/HAPMAP3/* | sort -k 1,1) | awk '{ print $1,$2,$3,$9,$4,$5,$6,100000}' >> tmp
+mv tmp META_ANALYSIS_10K23_beta_se_correctGC1_pdgene_sharing_280317.ma
+
+
+
+# ------ CHILD BIRTH WEIGHT ---------- #
+
+# Comes from the EGG project: (Early Growth Genetics Consortium) -> http://egg-consortium.org
+
+# Use Wget to download data in delta, and unzip it.
+cd /shares/compbio/Group-Wray/YanHoltz/DATA/GWAS/GWAS_SUMSTAT/ORIGINAL_FILES
+wget http://mccarthy.well.ox.ac.uk/publications/2016/EggBirthWeight_Nature/BW3_Transethnic_summary_stats.txt.gz
+gunzip BW3_Transethnic_summary_stats.txt.gz
+
+# I've got all the info except allele frequency. I need to add it.
+echo "SNP A1 A2 freq b se p n" > tmp
+join <( cat EGG-GWAS-BL.txt | grep -v "^CHR" | sort -t, -k 3) <(awk '{print $2, $6}' /shares/compbio/Group-Wray/YanHoltz/DATA/ALLELE_FREQUENCY/HAPMAP3/* | sort -k 1,1) | awk '{ print $1,$2,$3,$9,$4,$5,$6,100000}' >> tmp
+mv tmp META_ANALYSIS_10K23_beta_se_correctGC1_pdgene_sharing_280317.ma
+
+
+
+
+# ------ ECZEMA ---------- #
+
+# Comes from the EAGLE eczema consortium -> https://data.bris.ac.uk/data/dataset/28uchsdpmub118uex26ylacqm
+
+# Use Wget to download data in delta, and unzip it.
+cd /shares/compbio/Group-Wray/YanHoltz/DATA/GWAS/GWAS_SUMSTAT/ORIGINAL_FILES
+wget wget https://data.bris.ac.uk/datasets/tar/28uchsdpmub118uex26ylacqm.zip
+gunzip EGG-GWAS-BL.txt.gz
+
+
+
 
 
 
@@ -122,7 +172,7 @@ gtex <- read.table("0_DATA/smr_VitaminDXiaEtAl_GTEXLiver.smr", header=T)
 gtex %>% filter(p_SMR < (0.05 / nrow(gtex)) )
 ```
 
-Once more the 2 regions of the chromosome 11 are highlighted: around 15 Mb and around 71 Mb. This time, it's the genes SPON1 and RP11-66L16.2 that are found has having a causal effect on VitaminD. The gene SPON1 is located a bit before GWAS highlighted region (14.1 Mb vs 14.9 Mb). 
+Once more the 2 regions of the chromosome 11 are highlighted: around 15 Mb and around 71 Mb. This time, it's the genes SPON1 and RP11-66L16.2 that are found has having a causal effect on VitaminD. The gene SPON1 is located a bit before GWAS highlighted region (14.1 Mb vs 14.9 Mb).
 
 Note: the gene RP11-660L16.2 = ENSG00000254682 = AP002387.1
 
@@ -148,7 +198,7 @@ scp  y.holtz@delta.imb.uq.edu.au:/shares/compbio/Group-Wray/YanHoltz/VITAMIND_XI
 
 ```{r, warning=FALSE, message=FALSE, fig.align="center", fig.width=12, fig.height=9}
 # Make the plot
-source("SCRIPT/plot_SMR.r") 
+source("SCRIPT/plot_SMR.r")
 # Read the data file in R:
 SMRData = ReadSMRData("0_DATA/myplot.ENSG00000152268.8.txt")
 # Plot the SMR results in a genomic region centred around a probe:
@@ -161,7 +211,7 @@ SMRLocusPlot(data=SMRData, smr_thresh=8.4e-6, heidi_thresh=0.05, plotWindow=1000
 
 ```{r, warning=FALSE, message=FALSE, fig.align="center", fig.width=12, fig.height=9}
 # Make the plot
-source("SCRIPT/plot_SMR.r") 
+source("SCRIPT/plot_SMR.r")
 # Read the data file in R:
 SMRData = ReadSMRData("0_DATA/myplot.ENSG00000254682.1.txt")
 # Plot the SMR results in a genomic region centred around a probe:
@@ -252,11 +302,3 @@ write.table(trait[trait$freq>=0.01,c("SNP","A1","A2","freq","b","se","P","N")],p
 
 ## The End
 print("trait QC completed!")
-
-
-
-
-
-
-
-
